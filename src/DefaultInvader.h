@@ -1,0 +1,14 @@
+//
+// Created by Varun Srinivasan on 30/10/2024.
+//
+
+#ifndef CMAKESFMLPROJECT_DEFAULTINVADER_H
+#define CMAKESFMLPROJECT_DEFAULTINVADER_H
+
+
+class DefaultInvader {
+
+};
+
+
+#endif //CMAKESFMLPROJECT_DEFAULTINVADER_H

@@ -24,5 +24,7 @@ int main() {
                     break;
             }
         }
+        window.clear(sf::Color::Black);
+        window.display();
     }
 }

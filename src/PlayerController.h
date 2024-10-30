@@ -1,0 +1,14 @@
+//
+// Created by Varun Srinivasan on 30/10/2024.
+//
+
+#ifndef CMAKESFMLPROJECT_PLAYERCONTROLLER_H
+#define CMAKESFMLPROJECT_PLAYERCONTROLLER_H
+
+
+class PlayerController {
+
+};
+
+
+#endif //CMAKESFMLPROJECT_PLAYERCONTROLLER_H
