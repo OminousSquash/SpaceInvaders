@@ -23,7 +23,15 @@ add_executable(main src/main.cpp
         src/Invader.h
         src/Shield.h
         src/DefaultInvader.h
-        src/RareInvader.h)
+        src/RareInvader.h
+        src/RareInvader.cpp
+        src/DefaultInvader.cpp
+        src/Shield.cpp
+        src/Invader.cpp
+        src/RPG.cpp
+        src/Game.cpp
+        src/Player.cpp
+        src/constants.h)
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 
