@@ -15,7 +15,10 @@ private:
     int y;
     bool can_fire;
 public:
-    Player() : lives_left(3), is_powered(false), can_fire(false) {}
+    Player() : lives_left(3), is_powered(false), can_fire(false) {
+        set_x(0);
+        set_y(0);
+    }
 
     void set_x(int newX) {
         x = newX + constants::X_OFFSET;

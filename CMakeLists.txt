@@ -31,7 +31,12 @@ add_executable(main src/main.cpp
         src/RPG.cpp
         src/Game.cpp
         src/Player.cpp
-        src/constants.h)
+        src/constants.h
+        src/InvaderBullet.cpp
+        src/InvaderBullet.cpp
+        src/InvaderBullet.h
+        src/PlayerBullet.cpp
+        src/PlayerBullet.h)
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 

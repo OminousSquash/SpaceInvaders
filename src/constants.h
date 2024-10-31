@@ -10,6 +10,7 @@ namespace constants {
     const int Y_OFFSET = 0;
     const int WIDTH = 0;
     const int HEIGHT = 0;
+    const int BULLET_VELOCITY = 0;
 }
 
 
