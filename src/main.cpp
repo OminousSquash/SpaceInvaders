@@ -1,9 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "constants.h"
-#include "Game.h"
-#include "View.h"
+#include "headers/constants.h"
+#include "headers/Game.h"
+#include "headers/View.h"
 
 using namespace std;
 
@@ -13,6 +13,7 @@ Game initialiseGame() {
     PlayerController pc;
     g.set_player(p);
     g.set_player_controller(pc);
+    g.set_all_invaders();
     return g;
 }
 

@@ -2,9 +2,9 @@
 // Created by Varun Srinivasan on 31/10/2024.
 //
 
-#include "View.h"
+#include "headers/View.h"
 #include <SFML/Graphics.hpp>
-#include "constants.h"
+#include "headers/constants.h"
 
 void View::draw_base() {
     sf::RectangleShape base;
@@ -27,12 +27,20 @@ void View::draw_player() {
 
 
 void View::draw_invaders() {
-
+    vector<Invader> invaders = game.get_invaders();
+    for (Invader inv: invaders) {
+        sf::RectangleShape inv_rect;
+        inv_rect.setPosition(inv.get_x(), inv.get_y());
+        inv_rect.setSize(sf::Vector2f(constants::INVADER_LENGTH, constants::INVADER_HEIGHT));
+        inv_rect.setFillColor(sf::Color::Red);
+        window.draw(inv_rect);
+    }
 }
 
 void View::update_screen() {
     window.clear(sf::Color::Black);
     draw_base();
     draw_player();
+    draw_invaders();
     window.display();
 }

@@ -46,6 +46,10 @@ public:
     Player &get_player() {
         return player;
     }
+
+    vector<Invader> get_invaders() {
+        return invaders;
+    }
 };
 
 
