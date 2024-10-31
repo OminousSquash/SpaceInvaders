@@ -6,8 +6,6 @@
 #define CMAKESFMLPROJECT_CONSTANTS_H
 
 namespace constants {
-    const int X_OFFSET = 0;
-    const int Y_OFFSET = 0;
     const int WINDOW_WIDTH = 1000;
     const int WINDOW_HEIGHT = 800;
     const int BULLET_VELOCITY = 0;
@@ -16,6 +14,10 @@ namespace constants {
     const int START_Y = 0;
     const int BASE_HEIGHT = 30;
     const int BASE_WIDTH = 1000;
+    const int PLAYER_HEIGHT = 50;
+    const int PLAYER_WIDTH = 50;
+    const int X_OFFSET = 0;
+    const int Y_OFFSET = WINDOW_HEIGHT - BASE_HEIGHT - PLAYER_HEIGHT + 10;
 }
 
 

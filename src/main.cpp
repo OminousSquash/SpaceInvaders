@@ -23,6 +23,7 @@ int main() {
 
     Game g = initialiseGame();
     View v(g, window);
+
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {

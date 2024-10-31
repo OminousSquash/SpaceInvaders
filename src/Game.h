@@ -42,6 +42,10 @@ public:
     void set_all_invaders();
 
     void set_all_sheilds();
+
+    Player &get_player() {
+        return player;
+    }
 };
 
 

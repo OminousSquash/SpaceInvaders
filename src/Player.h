@@ -39,6 +39,22 @@ public:
     void set_is_powered() {
         is_powered = !is_powered;
     }
+
+    int get_x() {
+        return x;
+    }
+
+    int get_y() {
+        return y;
+    }
+
+    int get_lives_left() {
+        return lives_left;
+    }
+
+    bool get_can_fire() {
+        return can_fire;
+    }
 };
 
 
