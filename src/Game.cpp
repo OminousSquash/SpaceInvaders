@@ -8,8 +8,12 @@ void Game::update_level() {
 
 }
 
-void Game::set_player(Player &p) {
-    this->player = player;
+void Game::set_player(Player p) {
+    this->player = p;
+}
+
+void Game::set_player_controller(PlayerController pc) {
+    this->player_controller = pc;
 }
 
 void Game::set_all_invaders() {

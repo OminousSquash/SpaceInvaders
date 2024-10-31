@@ -22,6 +22,7 @@ add_executable(main src/main.cpp
         src/RPG.h
         src/Invader.h
         src/Shield.h
+        src/Game.h
         src/DefaultInvader.h
         src/RareInvader.h
         src/RareInvader.cpp

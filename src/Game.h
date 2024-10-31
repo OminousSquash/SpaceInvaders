@@ -19,29 +19,21 @@ using namespace std;
 class Game {
 private:
     int level;
+    int score;
     Player player;
     PlayerController player_controller;
     vector<Shield> shields;
     vector<Invader> invaders;
     static Game *instance;
 
-private:
-
-    Game() : level(0) {}
-
 public:
-    static Game *getInstance() {
-        if (instance == nullptr) {
-            instance = new Game();
-        }
-        return instance;
-    }
+    Game() : level(0), score(0) {}
 
     void update_level();
 
-    void set_player(Player &p);
+    void set_player(Player p);
 
-    void set_player_controller(PlayerController &pc);
+    void set_player_controller(PlayerController pc);
 
     void add_sheild(Shield &sheild);
 

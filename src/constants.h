@@ -8,10 +8,14 @@
 namespace constants {
     const int X_OFFSET = 0;
     const int Y_OFFSET = 0;
-    const int WIDTH = 0;
-    const int HEIGHT = 0;
+    const int WINDOW_WIDTH = 1000;
+    const int WINDOW_HEIGHT = 800;
     const int BULLET_VELOCITY = 0;
     const int INVADER_VELOCITY = 0;
+    const int START_X = 200;
+    const int START_Y = 0;
+    const int BASE_HEIGHT = 30;
+    const int BASE_WIDTH = 1000;
 }
 
 
