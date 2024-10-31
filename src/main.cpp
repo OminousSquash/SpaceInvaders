@@ -3,6 +3,7 @@
 
 #include "constants.h"
 #include "Game.h"
+#include "View.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ int main() {
     window.setFramerateLimit(144);
 
     Game g = initialiseGame();
-
+    View v(g, window);
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
@@ -29,12 +30,6 @@ int main() {
                 window.close();
             }
         }
-        window.clear(sf::Color::Black);
-        sf::RectangleShape r;
-        r.setSize(sf::Vector2f(constants::BASE_WIDTH, constants::BASE_HEIGHT));
-        r.setFillColor(sf::Color::Green);
-        r.setPosition(0, constants::WINDOW_HEIGHT - constants::BASE_HEIGHT);
-        window.draw(r);
-        window.display();
+        v.update_screen();
     }
 }
