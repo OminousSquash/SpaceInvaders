@@ -6,9 +6,9 @@
 #define CMAKESFMLPROJECT_GAME_H
 
 
-#include "player.h"
-#include "playercontroller.h"
-#include "shield.h"
+#include "Player.h"
+#include "PlayerController.h"
+#include "Shield.h"
 #include "Invader.h"
 
 #include <iostream>

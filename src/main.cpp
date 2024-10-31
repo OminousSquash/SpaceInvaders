@@ -1,11 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "constants.h"
+
 int main() {
     auto window = sf::RenderWindow({1920u, 1080u}, "CMake SFML Project");
     window.setFramerateLimit(144);
-    window.setPosition(sf::Vector2i(10, 20));
-    window.setSize(sf::Vector2u(300, 500));
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {

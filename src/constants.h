@@ -11,6 +11,7 @@ namespace constants {
     const int WIDTH = 0;
     const int HEIGHT = 0;
     const int BULLET_VELOCITY = 0;
+    const int INVADER_VELOCITY = 0;
 }
 
 
