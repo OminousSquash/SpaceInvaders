@@ -20,7 +20,6 @@ void Game::set_all_invaders() {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 10; j++) {
             Invader inv(j, i);
-            std::cout << "level: " << inv.get_level() << " position: " << inv.get_position() << std::endl;
             add_invader(inv);
         }
     }

@@ -15,16 +15,16 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(main src/main.cpp
         src/main.cpp
-        src/PlayerController.h
-        src/PlayerController.h
-        src/Projectile.h
-        src/Bullet.h
-        src/RPG.h
-        src/Invader.h
-        src/Shield.h
-        src/Game.h
-        src/DefaultInvader.h
-        src/RareInvader.h
+        src/headers/PlayerController.h
+        src/headers/PlayerController.h
+        src/headers/Projectile.h
+        src/headers/Bullet.h
+        src/headers/RPG.h
+        src/headers/Invader.h
+        src/headers/Shield.h
+        src/headers/Game.h
+        src/headers/DefaultInvader.h
+        src/headers/RareInvader.h
         src/RareInvader.cpp
         src/DefaultInvader.cpp
         src/Shield.cpp
@@ -32,14 +32,18 @@ add_executable(main src/main.cpp
         src/RPG.cpp
         src/Game.cpp
         src/Player.cpp
-        src/constants.h
+        src/headers/constants.h
         src/InvaderBullet.cpp
-        src/InvaderBullet.cpp
-        src/InvaderBullet.h
+        src/headers/InvaderBullet.h
         src/PlayerBullet.cpp
-        src/PlayerBullet.h
-        src/View.h
-        src/View.cpp)
+        src/headers/PlayerBullet.h
+        src/headers/View.h
+        src/View.cpp
+        src/Projectile.cpp
+        src/Bullet.cpp
+        src/Bullet.cpp
+        src/Bullet.cpp
+        src/PlayerController.cpp)
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 

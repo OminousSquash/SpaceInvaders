@@ -18,6 +18,7 @@ void View::draw_player() {
     Player &p = game.get_player();
     int player_x = p.get_x();
     int player_y = p.get_y();
+    cout << "(" << player_x << "," << player_y << ")" << endl;
     sf::RectangleShape player;
     player.setSize(sf::Vector2f(40, 40));
     player.setPosition(player_x, player_y);

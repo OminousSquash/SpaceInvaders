@@ -21,11 +21,11 @@ public:
     }
 
     void set_x(int newX) {
-        x = newX + constants::X_OFFSET;
+        this->x = newX + constants::X_OFFSET;
     }
 
     void set_y(int newY) {
-        y = newY + constants::Y_OFFSET;
+        this->y = newY + constants::Y_OFFSET;
     }
 
     void set_can_fire() {

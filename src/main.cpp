@@ -27,11 +27,21 @@ int main() {
 
     while (window.isOpen()) {
         sf::Event event{};
+        Player &p = g.get_player();
+        int player_x = p.get_x();
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+            player_x = max(0, player_x - 2 * constants::FRAME_MOVEMENT);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            player_x = min(constants::WINDOW_WIDTH - constants::PLAYER_WIDTH,
+                           player_x + 2 * constants::FRAME_MOVEMENT);
+        }
+        p.set_x(player_x);
         v.update_screen();
     }
 }

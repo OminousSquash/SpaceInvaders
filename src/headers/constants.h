@@ -23,6 +23,7 @@ namespace constants {
     const int INVADER_HEIGHT = 50;
     const int TOP_GAP = 80;
     const int LEVEL_GAP_SIZE = 10;
+    const int FRAME_MOVEMENT = 1;
 }
 
 

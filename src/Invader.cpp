@@ -4,16 +4,13 @@
 
 #include "headers/Invader.h"
 #include "headers/constants.h"
-#include <iostream>
 
 
 void Invader::convert_x() {
     this->x = (position + 1) * constants::INVADER_GAP_SIZE + position * constants::INVADER_LENGTH;
-    std::cout << "POSITION: " << position << " X: " << x << std::endl;
 }
 
 void Invader::convert_y() {
     this->y = constants::TOP_GAP + constants::LEVEL_GAP_SIZE * level + constants::INVADER_HEIGHT * level;
-    std::cout << "LEVEL: " << level << " Y: " << y << std::endl;
 }
 
