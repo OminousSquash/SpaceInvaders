@@ -23,6 +23,10 @@ public:
     void draw_player();
 
     void draw_invaders();
+
+    void draw_player_bullet();
+
+    void draw_invader_bullets();
 };
 
 

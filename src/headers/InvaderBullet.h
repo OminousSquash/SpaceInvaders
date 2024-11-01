@@ -1,11 +1,21 @@
-#ifndef CMAKESFMLPROJECT_INVADER_BULLET_H
-#define CMAKESFMLPROJECT_INVADER_BULLET_H
+//
+// Created by Varun Srinivasan on 01/11/2024.
+//
 
-#include "Bullet.h"
+#ifndef CMAKESFMLPROJECT_INVADERBULLET_H
+#define CMAKESFMLPROJECT_INVADERBULLET_H
 
-class InvaderBullet : public Bullet {
+#include "Projectile.h"
+#include "directions.h"
+
+class InvaderBullet : public Projectile {
 public:
-    InvaderBullet() : Bullet(-1) {}
+    InvaderBullet() : Projectile() {}
+
+    void on_impact() override {
+
+    }
 };
 
-#endif
+
+#endif //CMAKESFMLPROJECT_INVADERBULLET_H

@@ -5,9 +5,17 @@
 #ifndef CMAKESFMLPROJECT_RPG_H
 #define CMAKESFMLPROJECT_RPG_H
 
+#include "constants.h"
+#include "directions.h"
+#include "Projectile.h"
 
-class RPG {
+class RPG : public Projectile {
+public:
+    RPG() : Projectile() {}
 
+    void on_impact() override {
+
+    }
 };
 
 

@@ -14,6 +14,11 @@ private:
     int x;
     int y;
     bool can_fire;
+private:
+    void fire_standard();
+
+    void fire_rpg();
+
 public:
     Player() : lives_left(3), is_powered(false), can_fire(false) {
         set_x(0);

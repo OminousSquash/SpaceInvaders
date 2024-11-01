@@ -3,3 +3,6 @@
 //
 
 #include "headers/Player.h"
+#include "headers/Projectile.h"
+#include "headers/RPG.h"
+

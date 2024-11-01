@@ -7,7 +7,37 @@
 
 
 class Projectile {
+private:
+    bool terminated;
+    int x;
+    int y;
 
+public:
+    Projectile() : terminated(false) {}
+
+    Projectile(int x, int y) : x(x), y(y), terminated(false) {}
+
+    virtual void on_impact() = 0;
+
+    bool is_terminated() {
+        return terminated;
+    }
+
+    int get_x() {
+        return x;
+    }
+
+    int get_y() {
+        return y;
+    }
+
+    void set_x(int new_x) {
+        x = new_x;
+    }
+
+    void set_y(int new_y) {
+        y = new_y;
+    }
 };
 
 

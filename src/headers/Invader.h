@@ -29,6 +29,22 @@ public:
 
     void convert_y();
 
+    void set_x(int new_x) {
+        this->x = new_x;
+    }
+
+    void set_y(int new_y) {
+        this->y = new_y;
+    }
+
+    void change_direction() {
+        if (direction == 1) {
+            direction = -1;
+        } else {
+            direction = 1;
+        }
+    }
+
     int get_x() {
         return x;
     }

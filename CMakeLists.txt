@@ -18,7 +18,6 @@ add_executable(main src/main.cpp
         src/headers/PlayerController.h
         src/headers/PlayerController.h
         src/headers/Projectile.h
-        src/headers/Bullet.h
         src/headers/RPG.h
         src/headers/Invader.h
         src/headers/Shield.h
@@ -34,16 +33,17 @@ add_executable(main src/main.cpp
         src/Player.cpp
         src/headers/constants.h
         src/InvaderBullet.cpp
-        src/headers/InvaderBullet.h
         src/PlayerBullet.cpp
-        src/headers/PlayerBullet.h
         src/headers/View.h
         src/View.cpp
         src/Projectile.cpp
         src/Bullet.cpp
         src/Bullet.cpp
         src/Bullet.cpp
-        src/PlayerController.cpp)
+        src/PlayerController.cpp
+        src/headers/MovementHandler.h
+        src/MovementHandler.cpp
+        src/headers/directions.h)
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 

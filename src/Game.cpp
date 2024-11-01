@@ -12,9 +12,6 @@ void Game::set_player(Player p) {
     this->player = p;
 }
 
-void Game::set_player_controller(PlayerController pc) {
-    this->player_controller = pc;
-}
 
 void Game::set_all_invaders() {
     for (int i = 0; i < 4; i++) {
@@ -36,4 +33,3 @@ void Game::add_invader(Invader &invader) {
 void Game::add_sheild(Shield &sheild) {
     shields.push_back(sheild);
 }
-

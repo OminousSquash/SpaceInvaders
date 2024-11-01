@@ -4,15 +4,14 @@
 #include "headers/constants.h"
 #include "headers/Game.h"
 #include "headers/View.h"
+#include "headers/MovementHandler.h"
 
 using namespace std;
 
 Game initialiseGame() {
     Game g;
     Player p;
-    PlayerController pc;
     g.set_player(p);
-    g.set_player_controller(pc);
     g.set_all_invaders();
     return g;
 }
@@ -28,20 +27,15 @@ int main() {
     while (window.isOpen()) {
         sf::Event event{};
         Player &p = g.get_player();
-        int player_x = p.get_x();
+        vector<Invader> invaders = g.get_invaders();
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-            player_x = max(0, player_x - 2 * constants::FRAME_MOVEMENT);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            player_x = min(constants::WINDOW_WIDTH - constants::PLAYER_WIDTH,
-                           player_x + 2 * constants::FRAME_MOVEMENT);
-        }
-        p.set_x(player_x);
+        Movement::player_movement(p);
+//        Movement::invader_movement(invaders);
+        Movement::player_bullet_movement(g);
         v.update_screen();
     }
 }

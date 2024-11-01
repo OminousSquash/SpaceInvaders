@@ -1,12 +1,23 @@
-#ifndef CMAKESFMLPROJECT_PLAYER_BULLET_H
-#define CMAKESFMLPROJECT_PLAYER_BULLET_H
+//
+// Created by Varun Srinivasan on 01/11/2024.
+//
 
-#include "Bullet.h"
+#ifndef CMAKESFMLPROJECT_PLAYERBULLET_H
+#define CMAKESFMLPROJECT_PLAYERBULLET_H
 
-class PlayerBullet : public Bullet {
+#include "constants.h"
+#include "directions.h"
+#include "Projectile.h"
+
+class PlayerBullet : public Projectile {
 public:
-    PlayerBullet() : Bullet(1) {}
+    PlayerBullet() : Projectile() {}
+
+    PlayerBullet(int x, int y) : Projectile(x, y) {}
+
+    void on_impact() override {
+
+    }
 };
 
-
-#endif
+#endif //CMAKESFMLPROJECT_PLAYERBULLET_H

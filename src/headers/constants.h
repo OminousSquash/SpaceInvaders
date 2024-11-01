@@ -8,7 +8,7 @@
 namespace constants {
     const int WINDOW_WIDTH = 1000;
     const int WINDOW_HEIGHT = 800;
-    const int BULLET_VELOCITY = 0;
+    const int BULLET_VELOCITY = 5;
     const int INVADER_VELOCITY = 0;
     const int START_X = 200;
     const int START_Y = 0;
@@ -24,7 +24,7 @@ namespace constants {
     const int TOP_GAP = 80;
     const int LEVEL_GAP_SIZE = 10;
     const int FRAME_MOVEMENT = 1;
+    const int BULLET_HEIGHT = 15;
 }
-
 
 #endif //CMAKESFMLPROJECT_CONSTANTS_H
