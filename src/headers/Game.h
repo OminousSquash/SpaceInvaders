@@ -67,12 +67,10 @@ public:
         player_bullet = bullet;
     }
 
-    void check_player_bullet_bounds() {
-        if (player_bullet->get_y() <= 0) {
-            delete player_bullet;
-            player_bullet = nullptr;
-        }
-    }
+    void check_player_bullet_bounds();
+
+    void check_player_bullet_collisions();
+
 };
 
 

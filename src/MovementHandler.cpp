@@ -59,4 +59,5 @@ void Movement::player_bullet_movement(Game &g) {
     int bullet_y = player_bullet->get_y();
     player_bullet->set_y(bullet_y - constants::BULLET_VELOCITY);
     g.check_player_bullet_bounds();
+    g.check_player_bullet_collisions();
 }
