@@ -71,6 +71,7 @@ public:
 
     void check_player_bullet_collisions();
 
+    void handle_player_bullet_collision(int idx);
 };
 
 

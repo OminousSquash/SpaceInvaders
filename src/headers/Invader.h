@@ -37,6 +37,10 @@ public:
         this->y = new_y;
     }
 
+    void kill() {
+        alive = false;
+    }
+
     void change_direction() {
         if (direction == 1) {
             direction = -1;

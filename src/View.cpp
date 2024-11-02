@@ -32,6 +32,9 @@ void View::draw_invaders() {
     vector<Invader> invaders = game.get_invaders();
     for (int i = 0; i < invaders.size(); i++) {
         Invader &invader = invaders[i];
+        if (!invader.is_alive()) {
+            continue;
+        }
         sf::RectangleShape inv_rect;
         inv_rect.setPosition(invader.get_x(), invader.get_y());
         inv_rect.setSize(sf::Vector2f(constants::INVADER_LENGTH, constants::INVADER_HEIGHT));
