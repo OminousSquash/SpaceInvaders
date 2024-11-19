@@ -23,8 +23,6 @@ public:
         convert_y();
     }
 
-    void flip_direction();
-
     void convert_x();
 
     void convert_y();

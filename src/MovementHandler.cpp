@@ -25,23 +25,23 @@ void Movement::player_movement(Player &p) {
 
 void Movement::invader_movement(std::vector<Invader> &invaders) {
     int direction = invaders[0].get_direction();
-    if (direction == 1) {
-        while (invaders[invaders.size() - 1].get_x() < constants::WINDOW_WIDTH) {
-            for (int i = 0; i < invaders.size(); i++) {
-                Invader &invader = invaders[i];
-                invader.set_x(invader.get_x() + direction * constants::FRAME_MOVEMENT);
-            }
-        }
-    } else if (direction == -1) {
-        while (invaders[0].get_x() > 0) {
-            for (int i = 0; i < invaders.size(); i++) {
-                Invader &invader = invaders[i];
-                invader.set_x(invader.get_x() + direction * constants::FRAME_MOVEMENT);
-            }
-        }
+    for (Invader &invader: invaders) {
+        invader.set_x(invader.get_x() + direction * constants::INVADER_VELOCITY);
     }
-    for (Invader invader: invaders) {
-        invader.change_direction();
+
+    int x_left = invaders[0].get_x();
+    int x_right = invaders[constants::NUM_INVADERS - 1].get_x() + constants::INVADER_LENGTH;
+
+    if (direction == constants::RIGHT && x_right >= constants::WINDOW_WIDTH - constants::BUFFER) {
+        for (Invader &invader: invaders) {
+            invader.set_y(invader.get_y() + constants::INVADER_DROP);
+            invader.change_direction();
+        }
+    } else if (direction == constants::LEFT && x_left <= constants::BUFFER) {
+        for (Invader &invader: invaders) {
+            invader.set_y(invader.get_y() + constants::INVADER_DROP);
+            invader.change_direction();
+        }
     }
 }
 
@@ -64,14 +64,13 @@ void Movement::player_bullet_movement(Game &g) {
 
 void Movement::invader_bullet_movement(Game &g) {
     vector<InvaderBullet *> &invader_bullets = g.get_invader_bullets();
-    for (int i = 0; i < invader_bullets.size(); i++) {
-        InvaderBullet *invader_bullet = invader_bullets[i];
+    for (InvaderBullet *&invader_bullet: invader_bullets) {
         if (invader_bullet == nullptr) {
             continue;
         }
         int invader_bullet_y = invader_bullet->get_y();
         invader_bullet->set_y(invader_bullet_y + constants::BULLET_VELOCITY);
-        g.check_invader_bullet_bounds(invader_bullets[i]);
+        g.check_invader_bullet_bounds(invader_bullet);
     }
-//    g.check_invader_bullet_collisions();
+    g.check_invader_bullet_collisions();
 }

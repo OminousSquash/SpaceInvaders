@@ -9,7 +9,7 @@ namespace constants {
     const int WINDOW_WIDTH = 1000;
     const int WINDOW_HEIGHT = 800;
     const int BULLET_VELOCITY = 5;
-    const int INVADER_VELOCITY = 0;
+    const int INVADER_VELOCITY = 2;
     const int START_X = 200;
     const int START_Y = 0;
     const int BASE_HEIGHT = 30;
@@ -28,6 +28,10 @@ namespace constants {
     const int NUM_INVADERS = 8;
     const int NUM_INVADER_LEVELS = 4;
     const int INVADER_BULLET_THRESHOLD = 9;
+    const int LEFT = -1;
+    const int RIGHT = 1;
+    const int BUFFER = 50;
+    const int INVADER_DROP = 10;
 }
 
 #endif //CMAKESFMLPROJECT_CONSTANTS_H

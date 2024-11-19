@@ -53,7 +53,7 @@ public:
         return player;
     }
 
-    vector<Invader> get_invaders() {
+    vector<Invader> &get_invaders() {
         return invaders;
     }
 

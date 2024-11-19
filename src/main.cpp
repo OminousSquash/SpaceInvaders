@@ -38,6 +38,7 @@ int main() {
         Movement::player_movement(p);
         Movement::player_bullet_movement(g);
         Movement::invader_bullet_movement(g);
+        Movement::invader_movement(g.get_invaders());
         v.update_screen();
     }
 }
