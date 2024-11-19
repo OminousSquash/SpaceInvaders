@@ -61,3 +61,17 @@ void Movement::player_bullet_movement(Game &g) {
     g.check_player_bullet_bounds();
     g.check_player_bullet_collisions();
 }
+
+void Movement::invader_bullet_movement(Game &g) {
+    vector<InvaderBullet *> &invader_bullets = g.get_invader_bullets();
+    for (int i = 0; i < invader_bullets.size(); i++) {
+        InvaderBullet *invader_bullet = invader_bullets[i];
+        if (invader_bullet == nullptr) {
+            continue;
+        }
+        int invader_bullet_y = invader_bullet->get_y();
+        invader_bullet->set_y(invader_bullet_y + constants::BULLET_VELOCITY);
+        g.check_invader_bullet_bounds(invader_bullets[i]);
+    }
+//    g.check_invader_bullet_collisions();
+}

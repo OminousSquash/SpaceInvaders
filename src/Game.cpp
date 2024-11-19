@@ -3,6 +3,7 @@
 //
 
 #include "headers/Game.h"
+#include <ctime>
 
 void Game::update_level() {
 
@@ -13,8 +14,8 @@ void Game::set_player(Player p) {
 }
 
 void Game::set_all_invaders() {
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 10; j++) {
+    for (int i = 0; i < constants::NUM_INVADER_LEVELS; i++) {
+        for (int j = 0; j < constants::NUM_INVADERS; j++) {
             Invader inv(j, i);
             add_invader(inv);
         }
@@ -48,6 +49,10 @@ void Game::handle_player_bullet_collision(int idx) {
     invader.kill();
 }
 
+void Game::handle_score_update(int invader_level) {
+    score += (invader_level + 1) * 10;
+}
+
 void Game::check_player_bullet_collisions() {
     if (player_bullet == nullptr) {
         return;
@@ -64,7 +69,53 @@ void Game::check_player_bullet_collisions() {
             delete player_bullet;
             player_bullet = nullptr;
             handle_player_bullet_collision(i);
+            handle_score_update(invader.get_level());
             return;
         }
     }
 }
+
+void Game::generate_invader_bullets() {
+    for (int i = 0; i < invaders.size(); i++) {
+        Invader &invader = invaders[i];
+//        srand((unsigned) time(0));
+//        int random_number = (rand() % 10) + 1;
+        if (invader.is_alive() && invader_bullets[i] == nullptr) {
+            cout << "GENERATING BULLET: " << i << endl;
+            invader_bullets[i] = new InvaderBullet(invader.get_x() + constants::INVADER_LENGTH / 2,
+                                                   invader.get_y() + constants::INVADER_HEIGHT);
+        }
+    }
+}
+
+void Game::check_invader_bullet_bounds(InvaderBullet *&invader_bullet) {
+    if (invader_bullet == nullptr)
+        return;
+    int y = invader_bullet->get_y();
+    if (y + constants::BULLET_HEIGHT >= constants::WINDOW_HEIGHT) {
+        std::cout << "DELETING BULLET" << std::endl;
+        delete invader_bullet;
+        invader_bullet = nullptr;
+    }
+}
+
+void Game::check_invader_bullet_collisions() {
+    for (int i = 0; i < invader_bullets.size(); i++) {
+        InvaderBullet *invader_bullet = invader_bullets[i];
+        if (invader_bullet == nullptr) {
+            continue;
+        }
+        int bullet_x = invader_bullet->get_x();
+        int bullet_y = invader_bullet->get_y();
+        int player_x = player.get_x();
+        int player_y = player.get_y();
+        if (player_x <= bullet_x && bullet_x <= player_x
+            && bullet_y + constants::BULLET_HEIGHT >= player_y) {
+            player.set_lives_left(player.get_lives_left() - 1);
+            delete invader_bullet;
+            invader_bullet = nullptr;
+        }
+    }
+}
+
+void Game::check_all_bullet_collisions() {}

@@ -44,7 +44,21 @@ void View::draw_invaders() {
 }
 
 void View::draw_invader_bullets() {
-
+    vector<InvaderBullet *> invader_bullets = game.get_invader_bullets();
+    for (int i = 0; i < invader_bullets.size(); i++) {
+        InvaderBullet *invader_bullet = invader_bullets[i];
+        if (invader_bullet == nullptr) {
+            continue;
+        }
+        sf::Vertex line[] =
+                {
+                        sf::Vertex(sf::Vector2f(invader_bullet->get_x(), invader_bullet->get_y()), sf::Color::White),
+                        sf::Vertex(sf::Vector2f(invader_bullet->get_x(),
+                                                invader_bullet->get_y() + constants::BULLET_HEIGHT),
+                                   sf::Color::Yellow)
+                };
+        window.draw(line, 2, sf::Lines);
+    }
 }
 
 void View::draw_player_bullet() {
@@ -67,5 +81,6 @@ void View::update_screen() {
     draw_player();
     draw_invaders();
     draw_player_bullet();
+    draw_invader_bullets();
     window.display();
 }

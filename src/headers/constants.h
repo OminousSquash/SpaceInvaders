@@ -18,13 +18,16 @@ namespace constants {
     const int PLAYER_WIDTH = 50;
     const int X_OFFSET = 0;
     const int Y_OFFSET = WINDOW_HEIGHT - BASE_HEIGHT - PLAYER_HEIGHT + 10;
-    const int INVADER_GAP_SIZE = 45;
-    const int INVADER_LENGTH = 50;
-    const int INVADER_HEIGHT = 50;
+    const int INVADER_GAP_SIZE = 30;
+    const int INVADER_LENGTH = 30;
+    const int INVADER_HEIGHT = 30;
     const int TOP_GAP = 80;
     const int LEVEL_GAP_SIZE = 10;
     const int FRAME_MOVEMENT = 1;
-    const int BULLET_HEIGHT = 15;
+    const int BULLET_HEIGHT = 30;
+    const int NUM_INVADERS = 8;
+    const int NUM_INVADER_LEVELS = 4;
+    const int INVADER_BULLET_THRESHOLD = 9;
 }
 
 #endif //CMAKESFMLPROJECT_CONSTANTS_H

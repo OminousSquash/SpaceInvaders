@@ -28,14 +28,16 @@ int main() {
         sf::Event event{};
         Player &p = g.get_player();
         vector<Invader> invaders = g.get_invaders();
+        vector<InvaderBullet *> invader_bullets = g.get_invader_bullets();
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
         }
+        g.generate_invader_bullets();
         Movement::player_movement(p);
-//        Movement::invader_movement(invaders);
         Movement::player_bullet_movement(g);
+        Movement::invader_bullet_movement(g);
         v.update_screen();
     }
 }

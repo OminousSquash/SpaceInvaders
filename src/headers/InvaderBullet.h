@@ -12,6 +12,8 @@ class InvaderBullet : public Projectile {
 public:
     InvaderBullet() : Projectile() {}
 
+    InvaderBullet(int x, int y) : Projectile(x, y) {}
+
     void on_impact() override {
 
     }

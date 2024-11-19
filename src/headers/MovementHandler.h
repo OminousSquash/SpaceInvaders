@@ -17,6 +17,8 @@ namespace Movement {
     void invader_movement(std::vector<Invader> &invaders);
 
     void player_bullet_movement(Game &g);
+
+    void invader_bullet_movement(Game &g);
 }
 
 #endif //CMAKESFMLPROJECT_MOVEMENTHANDLER_H
