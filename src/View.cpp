@@ -75,6 +75,31 @@ void View::draw_player_bullet() {
     window.draw(line, 2, sf::Lines);
 }
 
+void View::display_lives() {
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(
+            "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf");
+    sf::Text lives_left_text;
+
+    lives_left_text.setFont(roboto_font);
+    lives_left_text.setString("LIVES LEFT: " + to_string(game.get_player().get_lives_left()));
+    lives_left_text.setPosition(0, 0);
+    lives_left_text.setFillColor(sf::Color::White);
+    window.draw(lives_left_text);
+}
+
+void View::display_score() {
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(
+            "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf");
+    sf::Text score_string;
+    score_string.setFont(roboto_font);
+    score_string.setPosition(0, constants::BUFFER);
+    score_string.setFillColor(sf::Color::White);
+    score_string.setString("SCORE: " + to_string(game.get_score()));
+    window.draw(score_string);
+}
+
 void View::update_screen() {
     window.clear(sf::Color::Black);
     draw_base();
@@ -82,5 +107,7 @@ void View::update_screen() {
     draw_invaders();
     draw_player_bullet();
     draw_invader_bullets();
+    display_lives();
+    display_score();
     window.display();
 }

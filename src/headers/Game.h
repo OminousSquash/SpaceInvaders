@@ -84,6 +84,8 @@ public:
     void check_invader_bullet_bounds(InvaderBullet *&invader_bullet);
 
     void check_invader_bullet_collisions();
+
+    int get_score();
 };
 
 

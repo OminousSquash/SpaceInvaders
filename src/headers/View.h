@@ -27,6 +27,10 @@ public:
     void draw_player_bullet();
 
     void draw_invader_bullets();
+
+    void display_lives();
+
+    void display_score();
 };
 
 

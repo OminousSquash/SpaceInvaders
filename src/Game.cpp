@@ -50,7 +50,7 @@ void Game::handle_player_bullet_collision(int idx) {
 }
 
 void Game::handle_score_update(int invader_level) {
-    score += (invader_level + 1) * 10;
+    score += (constants::NUM_INVADER_LEVELS - invader_level) * 10;
 }
 
 void Game::check_player_bullet_collisions() {
@@ -116,3 +116,7 @@ void Game::check_invader_bullet_collisions() {
 }
 
 void Game::check_all_bullet_collisions() {}
+
+int Game::get_score() {
+    return score;
+}
