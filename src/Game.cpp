@@ -109,8 +109,7 @@ void Game::check_invader_bullet_collisions() {
         if (player_x <= bullet_x && bullet_x <= player_x + constants::PLAYER_WIDTH
             && bullet_y + constants::BULLET_HEIGHT >= player_y) {
             player.set_lives_left(player.get_lives_left() - 1);
-            delete invader_bullet;
-            invader_bullet = nullptr;
+            Game::life_lost_reset();
         }
     }
 }
@@ -119,4 +118,17 @@ void Game::check_all_bullet_collisions() {}
 
 int Game::get_score() {
     return score;
+}
+
+void Game::life_lost_reset() {
+    for (InvaderBullet *&invader_bullet: invader_bullets) {
+        if (invader_bullet != nullptr) {
+            delete invader_bullet;
+            invader_bullet = nullptr;
+        }
+    }
+    invader_bullets = vector<InvaderBullet *>(constants::NUM_INVADER_LEVELS * constants::NUM_INVADERS, nullptr);
+    player_bullet = nullptr;
+    player.set_x(0);
+    player.set_y(0);
 }

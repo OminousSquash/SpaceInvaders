@@ -37,6 +37,8 @@ public:
 
     void update_level();
 
+    void life_lost_reset();
+
     void set_player(Player p);
 
     void set_player_controller(PlayerController pc);
