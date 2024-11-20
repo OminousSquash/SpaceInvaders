@@ -31,6 +31,8 @@ public:
     void display_lives();
 
     void display_score();
+
+    void display_level();
 };
 
 

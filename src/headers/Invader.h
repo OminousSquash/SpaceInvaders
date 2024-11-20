@@ -18,7 +18,7 @@ private:
     bool alive;
 public:
     Invader(int position, int level) : level(level), position(position), direction(1),
-                                       velocity(constants::INVADER_VELOCITY) {
+                                       velocity(constants::INVADER_VELOCITY), alive(true) {
         convert_x();
         convert_y();
     }

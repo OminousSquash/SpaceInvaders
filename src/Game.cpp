@@ -6,7 +6,10 @@
 #include <ctime>
 
 void Game::update_level() {
-
+    hard_cleanup();
+    player.reset();
+    set_all_invaders();
+    level++;
 }
 
 void Game::set_player(Player p) {
@@ -47,6 +50,10 @@ void Game::check_player_bullet_bounds() {
 void Game::handle_player_bullet_collision(int idx) {
     Invader &invader = invaders[idx];
     invader.kill();
+    num_invaders_alive--;
+    if (num_invaders_alive == 0) {
+        Game::update_level();
+    }
 }
 
 void Game::handle_score_update(int invader_level) {
@@ -109,7 +116,11 @@ void Game::check_invader_bullet_collisions() {
         if (player_x <= bullet_x && bullet_x <= player_x + constants::PLAYER_WIDTH
             && bullet_y + constants::BULLET_HEIGHT >= player_y) {
             player.set_lives_left(player.get_lives_left() - 1);
-            Game::life_lost_reset();
+            if (player.get_lives_left() > 0) {
+                Game::life_lost_reset();
+            } else {
+                Game::hard_reset();
+            }
         }
     }
 }
@@ -120,15 +131,39 @@ int Game::get_score() {
     return score;
 }
 
-void Game::life_lost_reset() {
+void Game::cleanup() {
     for (InvaderBullet *&invader_bullet: invader_bullets) {
         if (invader_bullet != nullptr) {
             delete invader_bullet;
             invader_bullet = nullptr;
         }
     }
-    invader_bullets = vector<InvaderBullet *>(constants::NUM_INVADER_LEVELS * constants::NUM_INVADERS, nullptr);
-    player_bullet = nullptr;
-    player.set_x(0);
-    player.set_y(0);
+    invader_bullets.clear(); // Clear the current vector after deallocation
+    invader_bullets.resize(constants::NUM_INVADER_LEVELS * constants::NUM_INVADERS, nullptr); // Reinitialize
+
+    if (player_bullet != nullptr) {
+        delete player_bullet;
+        player_bullet = nullptr;
+    }
+}
+
+void Game::hard_cleanup() {
+    cleanup();
+    num_invaders_alive = constants::NUM_INVADER_LEVELS * constants::NUM_INVADERS;
+    invaders.clear();
+}
+
+
+void Game::life_lost_reset() {
+    cleanup();
+    player.reset();
+}
+
+
+void Game::hard_reset() {
+    hard_cleanup();
+    player.hard_reset();
+    set_all_invaders();
+    score = 0;
+    level = 0;
 }

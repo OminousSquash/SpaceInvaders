@@ -29,7 +29,7 @@ void View::draw_player() {
 
 
 void View::draw_invaders() {
-    vector<Invader> invaders = game.get_invaders();
+    vector<Invader> &invaders = game.get_invaders();
     for (int i = 0; i < invaders.size(); i++) {
         Invader &invader = invaders[i];
         if (!invader.is_alive()) {
@@ -100,6 +100,18 @@ void View::display_score() {
     window.draw(score_string);
 }
 
+void View::display_level() {
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(
+            "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf");
+    sf::Text level_text;
+    level_text.setFont(roboto_font);
+    level_text.setString("LEVEL: " + to_string(game.get_level()));
+    level_text.setPosition(0, 2 * constants::BUFFER);
+    level_text.setFillColor(sf::Color::White);
+    window.draw(level_text);
+}
+
 void View::update_screen() {
     window.clear(sf::Color::Black);
     draw_base();
@@ -109,5 +121,6 @@ void View::update_screen() {
     draw_invader_bullets();
     display_lives();
     display_score();
+    display_level();
     window.display();
 }

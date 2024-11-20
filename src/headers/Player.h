@@ -25,6 +25,18 @@ public:
         set_y(0);
     }
 
+    void reset() {
+        set_x(0);
+        set_y(0);
+        is_powered = false;
+        can_fire = false;
+    }
+
+    void hard_reset() {
+        lives_left = 3;
+        reset();
+    }
+
     void set_x(int newX) {
         this->x = newX + constants::X_OFFSET;
     }

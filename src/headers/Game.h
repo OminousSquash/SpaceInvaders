@@ -28,12 +28,14 @@ private:
     vector<Shield> shields;
     vector<Invader> invaders;
     vector<InvaderBullet *> invader_bullets;
+    int num_invaders_alive;
     PlayerBullet *player_bullet;
 
 public:
     Game() : level(0), score(0), player_bullet(nullptr),
              invader_bullets(
-                     vector<InvaderBullet *>(constants::NUM_INVADER_LEVELS * constants::NUM_INVADERS, nullptr)) {}
+                     vector<InvaderBullet *>(constants::NUM_INVADER_LEVELS * constants::NUM_INVADERS, nullptr)),
+             num_invaders_alive(constants::NUM_INVADERS * constants::NUM_INVADER_LEVELS) {}
 
     void update_level();
 
@@ -88,6 +90,16 @@ public:
     void check_invader_bullet_collisions();
 
     int get_score();
+
+    void hard_reset();
+
+    void cleanup();
+
+    int get_level() {
+        return level;
+    }
+
+    void hard_cleanup();
 };
 
 

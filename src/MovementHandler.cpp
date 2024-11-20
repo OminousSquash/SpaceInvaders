@@ -14,11 +14,11 @@
 void Movement::player_movement(Player &p) {
     int player_x = p.get_x();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        player_x = std::max(0, player_x - 2 * constants::FRAME_MOVEMENT);
+        player_x = std::max(0, player_x - 2 * constants::PLAYER_VELOCITY);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         player_x = std::min(constants::WINDOW_WIDTH - constants::PLAYER_WIDTH,
-                            player_x + 2 * constants::FRAME_MOVEMENT);
+                            player_x + 2 * constants::PLAYER_VELOCITY);
     }
     p.set_x(player_x);
 }
