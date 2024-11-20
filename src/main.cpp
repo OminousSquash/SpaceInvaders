@@ -13,6 +13,7 @@ Game initialiseGame() {
     Player p;
     g.set_player(p);
     g.set_all_invaders();
+    g.set_all_sheilds();
     return g;
 }
 

@@ -26,8 +26,13 @@ void Game::set_all_invaders() {
 }
 
 void Game::set_all_sheilds() {
-
+    for (int i = 0; i < constants::NUM_SHIELDS; i++) {
+        Shield new_shield(
+                (i + 1) * constants::SHIELD_GAP + i * (constants::NUM_COMPONENTS * constants::SHIELD_COMPONENT_WIDTH));
+        shields.push_back(new_shield);
+    }
 }
+
 
 void Game::add_invader(Invader &invader) {
     invaders.push_back(invader);

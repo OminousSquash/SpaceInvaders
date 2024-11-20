@@ -112,6 +112,20 @@ void View::display_level() {
     window.draw(level_text);
 }
 
+void View::draw_shields() {
+    vector<Shield> &shields = game.get_shields();
+    for (Shield &shield: shields) {
+        vector<ShieldComponent> &shield_components = shield.get_shield_components();
+        for (ShieldComponent &component: shield_components) {
+            sf::RectangleShape shield_component;
+            shield_component.setSize(sf::Vector2f(constants::SHIELD_COMPONENT_WIDTH, component.get_height()));
+            shield_component.setFillColor(sf::Color::Green);
+            shield_component.setPosition(component.get_x(), component.get_y() - component.get_height());
+            window.draw(shield_component);
+        }
+    }
+}
+
 void View::update_screen() {
     window.clear(sf::Color::Black);
     draw_base();
@@ -119,6 +133,7 @@ void View::update_screen() {
     draw_invaders();
     draw_player_bullet();
     draw_invader_bullets();
+    draw_shields();
     display_lives();
     display_score();
     display_level();

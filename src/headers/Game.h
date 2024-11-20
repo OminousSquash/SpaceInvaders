@@ -100,6 +100,10 @@ public:
     }
 
     void hard_cleanup();
+
+    std::vector<Shield> &get_shields() {
+        return shields;
+    }
 };
 
 

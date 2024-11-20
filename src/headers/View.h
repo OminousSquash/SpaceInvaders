@@ -33,6 +33,8 @@ public:
     void display_score();
 
     void display_level();
+
+    void draw_shields();
 };
 
 
