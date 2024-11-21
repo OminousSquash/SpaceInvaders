@@ -61,6 +61,11 @@ void Game::handle_player_bullet_collision(int idx) {
     }
 }
 
+void Game::handle_player_bullet_collision(ShieldComponent &component) {
+    component.kill_display();
+}
+
+
 void Game::handle_score_update(int invader_level) {
     score += (constants::NUM_INVADER_LEVELS - invader_level) * 10;
 }
@@ -69,6 +74,29 @@ void Game::check_player_bullet_collisions() {
     if (player_bullet == nullptr) {
         return;
     }
+
+    for (Shield &shield: shields) {
+        vector<ShieldComponent> &shield_components = shield.get_shield_components();
+        int x_start = shield.get_x_begin();
+        int x_end = x_start + (constants::SHIELD_COMPONENT_WIDTH * (constants::NUM_COMPONENTS - 1));
+        int bullet_x = player_bullet->get_x();
+        int bullet_y = player_bullet->get_y() - constants::BULLET_HEIGHT;
+        if (!(x_start <= bullet_x && bullet_x <= x_end)) {
+            continue;
+        }
+        for (ShieldComponent &component: shield_components) {
+            int component_x = component.get_x();
+            int component_y = component.get_y();
+            if (component_x <= bullet_x && bullet_x <= component_x + constants::SHIELD_COMPONENT_WIDTH &&
+                bullet_y >= component_y && component.is_collidable()) {
+                delete player_bullet;
+                player_bullet = nullptr;
+                handle_player_bullet_collision(component);
+                return;
+            }
+        }
+    }
+
     for (int i = 0; i < invaders.size(); i++) {
         Invader &invader = invaders[i];
         int invader_x = invader.get_x();
@@ -98,6 +126,7 @@ void Game::generate_invader_bullets() {
         }
     }
 }
+
 
 void Game::check_invader_bullet_bounds(InvaderBullet *&invader_bullet) {
     if (invader_bullet == nullptr)

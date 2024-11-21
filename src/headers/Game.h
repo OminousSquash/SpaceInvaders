@@ -104,6 +104,8 @@ public:
     std::vector<Shield> &get_shields() {
         return shields;
     }
+
+    void handle_player_bullet_collision(ShieldComponent &component);
 };
 
 

@@ -117,6 +117,9 @@ void View::draw_shields() {
     for (Shield &shield: shields) {
         vector<ShieldComponent> &shield_components = shield.get_shield_components();
         for (ShieldComponent &component: shield_components) {
+            if (!component.is_collidable()) {
+                continue;
+            }
             sf::RectangleShape shield_component;
             shield_component.setSize(sf::Vector2f(constants::SHIELD_COMPONENT_WIDTH, component.get_height()));
             shield_component.setFillColor(sf::Color::Green);

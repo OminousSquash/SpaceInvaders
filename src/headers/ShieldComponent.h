@@ -13,8 +13,9 @@ private:
     int x;
     int y;
     int height;
+    bool display;
 public:
-    ShieldComponent(int x, int y, int height) : x(x), y(y), height(height) {}
+    ShieldComponent(int x, int y, int height) : x(x), y(y), height(height), display(true) {}
 
     int get_x() {
         return x;
@@ -26,6 +27,14 @@ public:
 
     int get_height() {
         return height;
+    }
+
+    void kill_display() {
+        display = false;
+    }
+
+    bool is_collidable() {
+        return display;
     }
 };
 

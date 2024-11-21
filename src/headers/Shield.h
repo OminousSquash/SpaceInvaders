@@ -23,6 +23,10 @@ public:
     std::vector<ShieldComponent> &get_shield_components() {
         return shield_components;
     }
+
+    int get_x_begin() {
+        return x_begin;
+    }
 };
 
 
