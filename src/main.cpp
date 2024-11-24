@@ -4,7 +4,7 @@
 #include "headers/constants.h"
 #include "headers/Game.h"
 #include "headers/View.h"
-#include "headers/MovementHandler.h"
+#include "headers/ActionHandler.h"
 
 using namespace std;
 
@@ -35,11 +35,16 @@ int main() {
                 window.close();
             }
         }
-//        g.generate_invader_bullets();
-        Movement::player_movement(p);
-        Movement::player_bullet_movement(g);
-//        Movement::invader_bullet_movement(g);
-        Movement::invader_movement(g.get_invaders());
+        if (v.get_process_input()) {
+            g.generate_invader_bullets();
+            Actions::player_movement(p);
+            Actions::player_bullet_movement(g);
+            Actions::invader_bullet_movement(g);
+            Actions::invader_movement(g.get_invaders());
+        } else {
+            Actions::restart_game(g);
+            v.reactivate();
+        }
         v.update_screen();
     }
 }

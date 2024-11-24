@@ -13,8 +13,9 @@ class View {
 private:
     sf::RenderWindow &window;
     Game &game;
+    bool process_input;
 public:
-    View(Game &game, sf::RenderWindow &window) : game(game), window(window) {}
+    View(Game &game, sf::RenderWindow &window) : game(game), window(window), process_input(true) {}
 
     void update_screen();
 
@@ -35,6 +36,20 @@ public:
     void display_level();
 
     void draw_shields();
+
+    void display_game_over();
+
+    void disactivate() {
+        process_input = false;
+    }
+
+    bool get_process_input() {
+        return process_input;
+    }
+
+    void reactivate() {
+        process_input = true;
+    }
 };
 
 

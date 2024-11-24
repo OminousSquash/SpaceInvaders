@@ -2,7 +2,7 @@
 // Created by Varun Srinivasan on 01/11/2024.
 //
 
-#include "headers/MovementHandler.h"
+#include "headers/ActionHandler.h"
 #include <SFML/Graphics.hpp>
 #include "headers/Player.h"
 #include "headers/Invader.h"
@@ -11,7 +11,7 @@
 #include "headers/Game.h"
 #include <iostream>
 
-void Movement::player_movement(Player &p) {
+void Actions::player_movement(Player &p) {
     int player_x = p.get_x();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         player_x = std::max(0, player_x - 2 * constants::PLAYER_VELOCITY);
@@ -23,7 +23,7 @@ void Movement::player_movement(Player &p) {
     p.set_x(player_x);
 }
 
-void Movement::invader_movement(std::vector<Invader> &invaders) {
+void Actions::invader_movement(std::vector<Invader> &invaders) {
     int direction = invaders[0].get_direction();
     for (Invader &invader: invaders) {
         invader.set_x(invader.get_x() + direction * constants::INVADER_VELOCITY);
@@ -45,7 +45,7 @@ void Movement::invader_movement(std::vector<Invader> &invaders) {
     }
 }
 
-void Movement::player_bullet_movement(Game &g) {
+void Actions::player_bullet_movement(Game &g) {
     PlayerBullet *player_bullet = g.get_player_bullet();
     if (player_bullet == nullptr && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         int player_x = g.get_player().get_x();
@@ -59,10 +59,11 @@ void Movement::player_bullet_movement(Game &g) {
     int bullet_y = player_bullet->get_y();
     player_bullet->set_y(bullet_y - constants::BULLET_VELOCITY);
     g.check_player_bullet_bounds();
-    g.check_player_bullet_collisions();
+    g.check_player_bullet_shield_collision();
+    g.check_player_bullet_invader_collision();
 }
 
-void Movement::invader_bullet_movement(Game &g) {
+void Actions::invader_bullet_movement(Game &g) {
     vector<InvaderBullet *> &invader_bullets = g.get_invader_bullets();
     for (InvaderBullet *&invader_bullet: invader_bullets) {
         if (invader_bullet == nullptr) {
@@ -73,4 +74,11 @@ void Movement::invader_bullet_movement(Game &g) {
         g.check_invader_bullet_bounds(invader_bullet);
     }
     g.check_invader_bullet_collisions();
+}
+
+void Actions::restart_game(Game &g) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+        std::cout << "RESTART HIT" << std::endl;
+        g.restart_game();
+    }
 }

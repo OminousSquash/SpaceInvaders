@@ -2,8 +2,8 @@
 // Created by Varun Srinivasan on 01/11/2024.
 //
 
-#ifndef CMAKESFMLPROJECT_MOVEMENTHANDLER_H
-#define CMAKESFMLPROJECT_MOVEMENTHANDLER_H
+#ifndef CMAKESFMLPROJECT_ACTIONHANDLER_H
+#define CMAKESFMLPROJECT_ACTIONHANDLER_H
 
 #include "Player.h"
 #include "Invader.h"
@@ -11,7 +11,7 @@
 #include "Game.h"
 #include <vector>
 
-namespace Movement {
+namespace Actions {
     void player_movement(Player &player);
 
     void invader_movement(std::vector<Invader> &invaders);
@@ -19,6 +19,8 @@ namespace Movement {
     void player_bullet_movement(Game &g);
 
     void invader_bullet_movement(Game &g);
+
+    void restart_game(Game &g);
 }
 
-#endif //CMAKESFMLPROJECT_MOVEMENTHANDLER_H
+#endif //CMAKESFMLPROJECT_ACTIONHANDLER_H

@@ -41,8 +41,8 @@ add_executable(main src/main.cpp
         src/Bullet.cpp
         src/Bullet.cpp
         src/PlayerController.cpp
-        src/headers/MovementHandler.h
-        src/MovementHandler.cpp
+        src/headers/ActionHandler.h
+        src/ActionHandler.cpp
         src/headers/directions.h
         src/headers/ShieldComponent.h)
 target_link_libraries(main PRIVATE sfml-graphics)

@@ -112,6 +112,27 @@ void View::display_level() {
     window.draw(level_text);
 }
 
+void View::display_game_over() {
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(
+            "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf");
+    sf::Text game_over;
+    game_over.setFont(roboto_font);
+    game_over.setCharacterSize(70);
+    game_over.setString("GAME OVER\n");
+    game_over.setPosition(constants::WINDOW_WIDTH / 3 - 30, constants::WINDOW_HEIGHT / 2 - 50);
+    game_over.setFillColor(sf::Color::White);
+
+    sf::Text restart_level;
+    restart_level.setFont(roboto_font);
+    restart_level.setCharacterSize(70);
+    restart_level.setString("PRESS R TO RESTART\n");
+    restart_level.setPosition(constants::WINDOW_WIDTH / 4 - 80, constants::WINDOW_HEIGHT / 2 + 40);
+    restart_level.setFillColor(sf::Color::White);
+    window.draw(game_over);
+    window.draw(restart_level);
+}
+
 void View::draw_shields() {
     vector<Shield> &shields = game.get_shields();
     for (Shield &shield: shields) {
@@ -131,14 +152,21 @@ void View::draw_shields() {
 
 void View::update_screen() {
     window.clear(sf::Color::Black);
-    draw_base();
-    draw_player();
-    draw_invaders();
-    draw_player_bullet();
-    draw_invader_bullets();
-    draw_shields();
-    display_lives();
-    display_score();
-    display_level();
+    if (game.is_game_over()) {
+        View::disactivate();
+    }
+    if (!View::get_process_input()) {
+        display_game_over();
+    } else {
+        draw_base();
+        draw_player();
+        draw_invaders();
+        draw_player_bullet();
+        draw_invader_bullets();
+        draw_shields();
+        display_lives();
+        display_score();
+        display_level();
+    }
     window.display();
 }

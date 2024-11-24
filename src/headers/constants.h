@@ -34,7 +34,7 @@ namespace constants {
     const int INVADER_DROP = 10;
     const int SHIELD_COMPONENT_WIDTH = 2;
     const int NUM_SHIELDS = 4;
-    const int NUM_COMPONENTS = 75;
+    const int NUM_SHIELD_COMPONENTS = 75;
     const int SHIELD_GAP = 75;
     const int SHIELD_TO_BASE_GAP = BASE_HEIGHT + PLAYER_HEIGHT + 75;
 }

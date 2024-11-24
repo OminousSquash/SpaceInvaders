@@ -30,12 +30,12 @@ private:
     vector<InvaderBullet *> invader_bullets;
     int num_invaders_alive;
     PlayerBullet *player_bullet;
-
+    bool game_over;
 public:
     Game() : level(0), score(0), player_bullet(nullptr),
              invader_bullets(
                      vector<InvaderBullet *>(constants::NUM_INVADER_LEVELS * constants::NUM_INVADERS, nullptr)),
-             num_invaders_alive(constants::NUM_INVADERS * constants::NUM_INVADER_LEVELS) {}
+             num_invaders_alive(constants::NUM_INVADERS * constants::NUM_INVADER_LEVELS), game_over(false) {}
 
     void update_level();
 
@@ -61,7 +61,7 @@ public:
         return invaders;
     }
 
-    PlayerBullet *get_player_bullet() {
+    PlayerBullet *&get_player_bullet() {
         return player_bullet;
     }
 
@@ -69,7 +69,7 @@ public:
         return invader_bullets;
     }
 
-    void set_player_bullet(PlayerBullet *bullet) {
+    void set_player_bullet(PlayerBullet *&bullet) {
         player_bullet = bullet;
     }
 
@@ -106,6 +106,23 @@ public:
     }
 
     void handle_player_bullet_collision(ShieldComponent &component);
+
+    void check_player_bullet_invader_collision();
+
+    void check_player_bullet_shield_collision();
+
+    void restart_game() {
+        game_over = false;
+    }
+
+    bool is_game_over() {
+        return game_over;
+    }
+
+    void set_game_over() {
+        game_over = true;
+    }
+
 };
 
 
