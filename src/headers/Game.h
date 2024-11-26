@@ -38,7 +38,7 @@ private:
     vector<ScatterBullet *> scatter_bullets;
     bool scatter_bullet_active;
     bool game_over;
-    std::chrono::time_point<std::chrono::steady_clock> creation_time;
+    std::chrono::time_point<std::chrono::steady_clock> time_of_scatter_power;
 public:
     Game() : level(0),
              score(0),
@@ -49,7 +49,7 @@ public:
              game_over(false),
              scatter_bullet_active(false),
              power_ups(vector<PowerUp *>()),
-             creation_time(std::chrono::steady_clock::now()) {}
+             time_of_scatter_power(std::chrono::steady_clock::now()) {}
 
     void update_level();
 
@@ -171,9 +171,9 @@ public:
 
     void generate_power_ups();
 
-    double get_elapsed_time() {
+    double get_time_since_last_scatter_power() {
         auto now = std::chrono::steady_clock::now();
-        return std::chrono::duration<double>(now - creation_time).count();
+        return std::chrono::duration<double>(now - time_of_scatter_power).count();
     }
 
     void power_up_bounds_check();

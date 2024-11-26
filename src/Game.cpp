@@ -5,6 +5,7 @@
 #include "headers/Game.h"
 #include <ctime>
 #include <cmath>
+#include <random> // For random number generation
 
 void Game::update_level() {
     hard_cleanup();
@@ -294,12 +295,19 @@ void Game::deactivate_scatter_bullets(ScatterBullet *&bullet) {
     }
 }
 
+int get_random_in_range(int min, int max) {
+    static std::mt19937 rng(static_cast<unsigned>(std::time(nullptr))); // Seed RNG once
+    std::uniform_int_distribution<int> dist(min, max);
+    return dist(rng);
+}
+
 void Game::generate_power_ups() {
-    int elapsed = get_elapsed_time();
-    if (elapsed > 0 && elapsed % 5 == 0) {
-        std::cout << "ELAPSED TIME: " << elapsed << std::endl;
-        cout << "REACHED" << endl;
-        power_ups.push_back(new PowerUp(0, constants::WINDOW_WIDTH / 2, PowerUpType::SCATTER_BULLET));
+    double scatter_elapsed = get_time_since_last_scatter_power();
+    if (scatter_elapsed >= constants::SCATTER_POWER_DELAY) {
+        int random_x = get_random_in_range(constants::POWER_UP_RADIUS,
+                                           constants::WINDOW_WIDTH - constants::POWER_UP_RADIUS);
+        power_ups.push_back(new PowerUp(random_x, 0, PowerUpType::SCATTER_BULLET));
+        time_of_scatter_power = std::chrono::steady_clock::now();
     }
 //    if (fmod(elapsed, 20.0) == 0 && elapsed > 0) {
 //        power_ups.push_back(new PowerUp(0, constants::WINDOW_WIDTH / 2, PowerUpType::BOMB));

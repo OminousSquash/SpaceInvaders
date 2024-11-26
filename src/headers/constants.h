@@ -39,6 +39,8 @@ namespace constants {
     const int SHIELD_TO_BASE_GAP = BASE_HEIGHT + PLAYER_HEIGHT + 75;
     const int POWER_UP_RADIUS = 20;
     const int POWER_UP_FALL_VELOCITY = 5;
+    const int SCATTER_POWER_DELAY = 5;
+    const int BOMB_POWER_DELAY = 5;
 }
 
 #endif //CMAKESFMLPROJECT_CONSTANTS_H

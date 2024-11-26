@@ -110,5 +110,6 @@ void Actions::power_up_balls_movement(Game &g) {
     for (PowerUp *&p: power_ups) {
         p->set_y(p->get_y() + constants::POWER_UP_FALL_VELOCITY);
         g.check_player_power_up_collision(p);
+        g.power_up_bounds_check();
     }
 }

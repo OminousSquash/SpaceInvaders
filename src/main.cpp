@@ -40,8 +40,8 @@ int main() {
             g.generate_power_ups();
             Actions::player_movement(g);
             Actions::player_bullet_movement(g);
-//            Actions::invader_bullet_movement(g);
-//            Actions::invader_movement(g.get_invaders());
+            Actions::invader_bullet_movement(g);
+            Actions::invader_movement(g.get_invaders());
             Actions::scatter_bullet_movement(g);
             Actions::power_up_balls_movement(g);
         } else {
