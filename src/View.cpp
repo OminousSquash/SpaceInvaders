@@ -156,13 +156,14 @@ void View::draw_scatter_bullets() {
         if (bullet != nullptr) {
             double start_x = bullet->get_x();
             double start_y = bullet->get_y();
-            double angle = bullet->get_angle();
-            double end_x = start_x + constants::BULLET_HEIGHT * cos(angle);
-            double end_y = start_y - constants::BULLET_HEIGHT * sin(angle);
+            double x_length = 1.0 * constants::BULLET_HEIGHT * bullet->get_x_vel() / constants::BULLET_VELOCITY;
+            double y_length = 1.0 * constants::BULLET_HEIGHT * bullet->get_y_vel() / constants::BULLET_VELOCITY;
+            double end_x = 1.0 * start_x + x_length;
+            double end_y = 1.0 * start_y - y_length;
             sf::Vertex line[] = {
                     sf::Vertex(sf::Vector2f(static_cast<float>(start_x), static_cast<float>(start_y)),
                                sf::Color::Green),
-                    sf::Vertex(sf::Vector2f(static_cast<float>(end_x), static_cast<float>(end_y)), sf::Color::Green)
+                    sf::Vertex(sf::Vector2f(static_cast<float>(end_x), static_cast<float>(end_y)), sf::Color::Blue)
             };
             window.draw(line, 2, sf::Lines);
         }

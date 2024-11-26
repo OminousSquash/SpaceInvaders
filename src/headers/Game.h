@@ -134,8 +134,12 @@ public:
 
     void check_power_ups();
 
-    void set_scatter_bullet() {
-        scatter_bullet_active = !scatter_bullet_active;
+    void enable_scatter_bullet() {
+        scatter_bullet_active = true;
+    }
+
+    void disable_scatter_bullet() {
+        scatter_bullet_active = false;
     }
 
     vector<ScatterBullet *> &get_scatter_bullets() {

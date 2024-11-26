@@ -4,6 +4,7 @@
 
 #include "headers/Game.h"
 #include <ctime>
+#include <cmath>
 
 void Game::update_level() {
     hard_cleanup();
@@ -220,7 +221,7 @@ void Game::check_power_ups() {
             PowerUpType type = power.get_power_up_type();
             switch (type) {
                 case PowerUpType::SCATTER_BULLET:
-                    set_scatter_bullet();
+                    enable_scatter_bullet();
                     break;
                 case PowerUpType::BOMB:
                     break;
@@ -230,8 +231,8 @@ void Game::check_power_ups() {
 }
 
 void Game::handle_scatter_bullets(double x, double y) {
-    for (int angle = 30; angle <= 150; angle += 30) {
-        ScatterBullet *bullet = new ScatterBullet(x + constants::PLAYER_WIDTH / 2, y, angle);
+    for (int factor = 1; factor <= 5; factor++) {
+        ScatterBullet *bullet = new ScatterBullet(x + constants::PLAYER_WIDTH / 2, y, M_PI * factor / 6);
         scatter_bullets.push_back(bullet);
     }
 }
@@ -240,8 +241,9 @@ void Game::scatter_bullet_detect_invader_collision(ScatterBullet *&bullet) {
     if (bullet == nullptr) {
         return;
     }
-    double bullet_x = bullet->get_x();
-    double bullet_y = bullet->get_y();
+    double bullet_angle = bullet->get_angle();
+    double bullet_x = bullet->get_x() + constants::BULLET_HEIGHT * cos(bullet_angle);
+    double bullet_y = bullet->get_y() - constants::BULLET_HEIGHT * sin(bullet_angle);
     for (int i = 0; i < invaders.size(); i++) {
         Invader &invader = invaders[i];
         double invader_x = 1.0 * invader.get_x();
@@ -260,16 +262,13 @@ void Game::scatter_bullet_bound_check(ScatterBullet *&bullet) {
     if (bullet == nullptr) return;
     double bullet_x = bullet->get_x();
     double bullet_y = bullet->get_y();
-    double bullet_angle = bullet->get_angle();
-    if (bullet_x <= 0) {
-        bullet->set_angle(180 - bullet_angle);
-    } else if (bullet_x >= constants::WINDOW_WIDTH) {
-        bullet->set_angle(180 - bullet_angle);
-    }
-    if (bullet_y <= 0) {
-        bullet->set_angle(360 - bullet_angle);
-    } else if (bullet_y >= constants::WINDOW_HEIGHT) {
-        bullet->set_angle(360 - bullet_angle);
+    double bullet_x_vel = bullet->get_x_vel();
+    double bullet_y_vel = bullet->get_y_vel();
+    if (bullet_x <= 0 || bullet_x >= constants::WINDOW_WIDTH) {
+        bullet->set_x_vel(-1.0 * bullet_x_vel);
+    } else if (bullet_y <= 0 || bullet_y >= constants::WINDOW_HEIGHT - constants::BASE_HEIGHT) {
+        std::cout << "HIT TOP CEILING: " << bullet_x << " " << bullet_y << std::endl;
+        bullet->set_y_vel(-1.0 * bullet_y_vel);
     }
 }
 

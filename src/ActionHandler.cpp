@@ -52,6 +52,7 @@ void Actions::player_bullet_movement(Game &g) {
     int player_y = g.get_player().get_y();
     if (g.is_scatter_bullet_active() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         g.handle_scatter_bullets(1.0 * player_x, 1.0 * player_y);
+        g.disable_scatter_bullet();
         return;
     }
     if (player_bullet == nullptr && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
@@ -95,8 +96,8 @@ void Actions::scatter_bullet_movement(Game &g) {
             double bullet_x = bullet->get_x();
             double bullet_y = bullet->get_y();
             double angle = bullet->get_angle();
-            bullet->set_x(bullet_x + cos(angle));
-            bullet->set_y(bullet_y - sin(angle));
+            bullet->set_x(bullet_x + bullet->get_x_vel());
+            bullet->set_y(bullet_y - bullet->get_y_vel());
             g.scatter_bullet_bound_check(bullet);
             g.scatter_bullet_detect_invader_collision(bullet);
             g.deactivate_scatter_bullets(bullet);

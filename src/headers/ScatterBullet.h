@@ -16,18 +16,16 @@ class ScatterBullet : Projectile {
 private:
     double x;
     double y;
-    double angle_degrees;
     double angle;
+    double x_vel;
+    double y_vel;
     std::chrono::time_point<std::chrono::steady_clock> creation_time;
 
 public:
     ScatterBullet(double x, double y, double angle) : x(x), y(y), creation_time(std::chrono::steady_clock::now()),
-                                                      angle_degrees(angle) {
-        to_rad(angle);
-    }
-
-    void to_rad(double ang) {
-        angle = M_PI * ang / 180;
+                                                      angle(angle) {
+        x_vel = constants::BULLET_VELOCITY * cos(angle);
+        y_vel = constants::BULLET_VELOCITY * sin(angle);
     }
 
     double get_x() { return x; }
@@ -46,12 +44,24 @@ public:
         y = new_y;
     }
 
-    void set_angle(double angle) {
-        to_rad(angle);
-    }
-
     double get_elapsed_time() {
         auto now = std::chrono::steady_clock::now();
         return std::chrono::duration<double>(now - creation_time).count();
+    }
+
+    void set_x_vel(double new_x_vel) {
+        x_vel = new_x_vel;
+    }
+
+    void set_y_vel(double new_y_vel) {
+        y_vel = new_y_vel;
+    }
+
+    double get_x_vel() {
+        return x_vel;
+    }
+
+    double get_y_vel() {
+        return y_vel;
     }
 };
