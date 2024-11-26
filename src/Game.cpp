@@ -216,12 +216,17 @@ void Game::hard_reset() {
 }
 
 void Game::check_player_power_up_collision(PowerUp *&power) {
-    int player_x = player.get_x();
+    int player_x_left = player.get_x();
+    int player_x_right = player_x_left + constants::PLAYER_WIDTH;
     int player_y = player.get_y();
-    int x_left = power->get_x() - constants::POWER_UP_RADIUS;
-    int x_right = power->get_x() + constants::POWER_UP_RADIUS;
-    int y_bottom = power->get_y() + constants::POWER_UP_RADIUS;
-    if (x_left <= player_x && player_x <= x_right && y_bottom >= player_y) {
+    int power_x_left = power->get_x() - constants::POWER_UP_RADIUS;
+    int power_x_right = power->get_x() + constants::POWER_UP_RADIUS;
+    int power_y_top = power->get_y() - constants::POWER_UP_RADIUS;
+    int power_y_bottom = power->get_y() + constants::POWER_UP_RADIUS;
+    if (!(power_x_left > player_x_right || player_x_left > power_x_right) &&
+        power_y_top <= player_y &&
+        player_y <= power_y_bottom) {
+        cout << "SCATTER POWER UP" << endl;
         switch (power->get_power_up_type()) {
             case PowerUpType::BOMB:
                 break;
@@ -308,6 +313,7 @@ int get_random_in_range(int min, int max) {
 void Game::generate_power_ups() {
     double scatter_elapsed = get_time_since_last_scatter_power();
     if (scatter_elapsed >= constants::SCATTER_POWER_DELAY) {
+//        cout << "POWERUPS CREATED" << endl;
         int random_x = get_random_in_range(constants::POWER_UP_RADIUS,
                                            constants::WINDOW_WIDTH - constants::POWER_UP_RADIUS);
         power_ups.push_back(new PowerUp(random_x, 0, PowerUpType::SCATTER_BULLET));

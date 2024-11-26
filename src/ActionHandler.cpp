@@ -84,7 +84,7 @@ void Actions::invader_bullet_movement(Game &g) {
 
 void Actions::restart_game(Game &g) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-        std::cout << "RESTART HIT" << std::endl;
+//        std::cout << "RESTART HIT" << std::endl;
         g.restart_game();
     }
 }
