@@ -3,7 +3,7 @@
 //
 
 #include "headers/Shield.h"
-#include <iostream>
+#include <cmath>
 
 void Shield::create_all_shield_components() {
     int component_x = x_begin;

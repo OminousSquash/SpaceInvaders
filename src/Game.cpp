@@ -2,6 +2,8 @@
 // Created by Varun Srinivasan on 30/10/2024.
 //
 
+#define _USE_MATH_DEFINES
+
 #include "headers/Game.h"
 #include <ctime>
 #include <cmath>
