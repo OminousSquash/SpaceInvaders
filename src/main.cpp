@@ -27,9 +27,6 @@ int main() {
 
     while (window.isOpen()) {
         sf::Event event{};
-        Player &p = g.get_player();
-        vector<Invader> invaders = g.get_invaders();
-        vector<InvaderBullet *> invader_bullets = g.get_invader_bullets();
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();

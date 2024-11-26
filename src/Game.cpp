@@ -124,11 +124,13 @@ void Game::check_player_bullet_invader_collision() {
 }
 
 void Game::generate_invader_bullets() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(1, 1e6);
     for (int i = 0; i < invaders.size(); i++) {
         Invader &invader = invaders[i];
-        srand(time(0));
-        int x = rand() % 100;
-        if (invader.is_alive() && invader_bullets[i] == nullptr && x >= 50) {
+        int x = dis(gen);
+        if (invader.is_alive() && invader_bullets[i] == nullptr && x >= constants::INVADER_BULLET_RNG_THRESHOLD) {
             invader_bullets[i] = new InvaderBullet(invader.get_x() + constants::INVADER_LENGTH / 2,
                                                    invader.get_y() + constants::INVADER_HEIGHT);
         }

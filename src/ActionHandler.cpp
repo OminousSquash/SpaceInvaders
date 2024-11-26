@@ -90,6 +90,7 @@ void Actions::restart_game(Game &g) {
 }
 
 void Actions::scatter_bullet_movement(Game &g) {
+    if (g.is_scatter_bullet_active()) return;
     vector<ScatterBullet *> &scatter_bullets = g.get_scatter_bullets();
     for (ScatterBullet *&bullet: scatter_bullets) {
         if (bullet != nullptr) {
