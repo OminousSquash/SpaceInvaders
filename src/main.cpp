@@ -37,10 +37,11 @@ int main() {
         }
         if (v.get_process_input()) {
             g.generate_invader_bullets();
-            Actions::player_movement(p);
+            Actions::player_movement(g);
             Actions::player_bullet_movement(g);
-            Actions::invader_bullet_movement(g);
-            Actions::invader_movement(g.get_invaders());
+//            Actions::invader_bullet_movement(g);
+//            Actions::invader_movement(g.get_invaders());
+            Actions::scatter_bullet_movement(g);
         } else {
             Actions::restart_game(g);
             v.reactivate();

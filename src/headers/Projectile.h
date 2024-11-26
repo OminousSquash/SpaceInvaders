@@ -17,12 +17,6 @@ public:
 
     Projectile(int x, int y) : x(x), y(y), terminated(false) {}
 
-    virtual void on_impact() = 0;
-
-    bool is_terminated() {
-        return terminated;
-    }
-
     int get_x() {
         return x;
     }

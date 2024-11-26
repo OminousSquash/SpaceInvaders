@@ -20,7 +20,7 @@ private:
     void fire_rpg();
 
 public:
-    Player() : lives_left(3), is_powered(false), can_fire(false) {
+    Player() : lives_left(3), is_powered(true), can_fire(false) {
         set_x(0);
         set_y(0);
     }

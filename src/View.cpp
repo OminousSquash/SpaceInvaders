@@ -150,6 +150,25 @@ void View::draw_shields() {
     }
 }
 
+void View::draw_scatter_bullets() {
+    vector<ScatterBullet *> &scatter_bullets = game.get_scatter_bullets();
+    for (ScatterBullet *&bullet: scatter_bullets) {
+        if (bullet != nullptr) {
+            double start_x = bullet->get_x();
+            double start_y = bullet->get_y();
+            double angle = bullet->get_angle();
+            double end_x = start_x + constants::BULLET_HEIGHT * cos(angle);
+            double end_y = start_y - constants::BULLET_HEIGHT * sin(angle);
+            sf::Vertex line[] = {
+                    sf::Vertex(sf::Vector2f(static_cast<float>(start_x), static_cast<float>(start_y)),
+                               sf::Color::Green),
+                    sf::Vertex(sf::Vector2f(static_cast<float>(end_x), static_cast<float>(end_y)), sf::Color::Green)
+            };
+            window.draw(line, 2, sf::Lines);
+        }
+    }
+}
+
 void View::update_screen() {
     window.clear(sf::Color::Black);
     if (game.is_game_over()) {
@@ -167,6 +186,7 @@ void View::update_screen() {
         display_lives();
         display_score();
         display_level();
+        draw_scatter_bullets();
     }
     window.display();
 }

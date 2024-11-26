@@ -14,10 +14,6 @@ public:
     PlayerBullet() : Projectile() {}
 
     PlayerBullet(int x, int y) : Projectile(x, y) {}
-
-    void on_impact() override {
-
-    }
 };
 
 #endif //CMAKESFMLPROJECT_PLAYERBULLET_H

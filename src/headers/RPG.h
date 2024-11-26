@@ -12,10 +12,6 @@
 class RPG : public Projectile {
 public:
     RPG() : Projectile() {}
-
-    void on_impact() override {
-
-    }
 };
 
 

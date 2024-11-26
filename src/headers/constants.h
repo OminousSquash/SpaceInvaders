@@ -37,6 +37,7 @@ namespace constants {
     const int NUM_SHIELD_COMPONENTS = 75;
     const int SHIELD_GAP = 75;
     const int SHIELD_TO_BASE_GAP = BASE_HEIGHT + PLAYER_HEIGHT + 75;
+    const int POWER_UP_WIDTH = 15;
 }
 
 #endif //CMAKESFMLPROJECT_CONSTANTS_H

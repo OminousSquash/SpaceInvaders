@@ -44,7 +44,11 @@ add_executable(main src/main.cpp
         src/headers/ActionHandler.h
         src/ActionHandler.cpp
         src/headers/directions.h
-        src/headers/ShieldComponent.h)
+        src/headers/ShieldComponent.h
+        src/headers/PowerUp.h
+        src/headers/PowerUpTypes.h
+        src/headers/ScatterBullet.h
+)
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 

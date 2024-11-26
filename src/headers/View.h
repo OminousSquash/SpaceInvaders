@@ -50,6 +50,8 @@ public:
     void reactivate() {
         process_input = true;
     }
+
+    void draw_scatter_bullets();
 };
 
 

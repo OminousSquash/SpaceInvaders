@@ -11,7 +11,8 @@
 #include "headers/Game.h"
 #include <iostream>
 
-void Actions::player_movement(Player &p) {
+void Actions::player_movement(Game &g) {
+    Player &p = g.get_player();
     int player_x = p.get_x();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         player_x = std::max(0, player_x - 2 * constants::PLAYER_VELOCITY);
@@ -47,9 +48,13 @@ void Actions::invader_movement(std::vector<Invader> &invaders) {
 
 void Actions::player_bullet_movement(Game &g) {
     PlayerBullet *player_bullet = g.get_player_bullet();
+    int player_x = g.get_player().get_x();
+    int player_y = g.get_player().get_y();
+    if (g.is_scatter_bullet_active() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        g.handle_scatter_bullets(1.0 * player_x, 1.0 * player_y);
+        return;
+    }
     if (player_bullet == nullptr && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        int player_x = g.get_player().get_x();
-        int player_y = g.get_player().get_y();
         player_bullet = new PlayerBullet(player_x + constants::PLAYER_WIDTH / 2, player_y);
         g.set_player_bullet(player_bullet);
     }
@@ -80,5 +85,21 @@ void Actions::restart_game(Game &g) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
         std::cout << "RESTART HIT" << std::endl;
         g.restart_game();
+    }
+}
+
+void Actions::scatter_bullet_movement(Game &g) {
+    vector<ScatterBullet *> &scatter_bullets = g.get_scatter_bullets();
+    for (ScatterBullet *&bullet: scatter_bullets) {
+        if (bullet != nullptr) {
+            double bullet_x = bullet->get_x();
+            double bullet_y = bullet->get_y();
+            double angle = bullet->get_angle();
+            bullet->set_x(bullet_x + cos(angle));
+            bullet->set_y(bullet_y - sin(angle));
+            g.scatter_bullet_bound_check(bullet);
+            g.scatter_bullet_detect_invader_collision(bullet);
+            g.deactivate_scatter_bullets(bullet);
+        }
     }
 }
