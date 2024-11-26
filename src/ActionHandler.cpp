@@ -95,12 +95,20 @@ void Actions::scatter_bullet_movement(Game &g) {
         if (bullet != nullptr) {
             double bullet_x = bullet->get_x();
             double bullet_y = bullet->get_y();
-            double angle = bullet->get_angle();
             bullet->set_x(bullet_x + bullet->get_x_vel());
             bullet->set_y(bullet_y - bullet->get_y_vel());
             g.scatter_bullet_bound_check(bullet);
             g.scatter_bullet_detect_invader_collision(bullet);
             g.deactivate_scatter_bullets(bullet);
         }
+    }
+}
+
+void Actions::power_up_balls_movement(Game &g) {
+    vector<PowerUp *> &power_ups = g.get_power_ups();
+    if (power_ups.empty()) return;
+    for (PowerUp *&p: power_ups) {
+        p->set_y(p->get_y() + constants::POWER_UP_FALL_VELOCITY);
+        g.check_player_power_up_collision(p);
     }
 }

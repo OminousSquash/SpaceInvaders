@@ -91,8 +91,6 @@ void Game::check_player_bullet_shield_collision() {
             int sc_y = sc.get_y();
             if (sc_x <= bullet_x && bullet_x < sc_x + constants::SHIELD_COMPONENT_WIDTH && sc.is_collidable() &&
                 bullet_y >= sc_y && bullet_y <= sc_y + sc.get_height()) {
-//                std::cout << "HIT SHIELD COMPONENT: " << sc_x << "," << sc_y << std::endl;
-//                std::cout << "BULLET: " << bullet_x << "," << bullet_y << std::endl;
                 delete player_bullet;
                 player_bullet = nullptr;
                 handle_player_bullet_collision(sc);
@@ -104,7 +102,6 @@ void Game::check_player_bullet_shield_collision() {
 
 void Game::check_player_bullet_invader_collision() {
     if (player_bullet == nullptr) {
-//        std::cout << "EARLY RETURN" << std::endl;
         return;
     }
     for (int i = 0; i < invaders.size(); i++) {
@@ -213,21 +210,38 @@ void Game::hard_reset() {
     level = 0;
 }
 
-void Game::check_power_ups() {
+void Game::check_player_power_up_collision(PowerUp *&power) {
     int player_x = player.get_x();
-    for (PowerUp &power: power_ups) {
-        int power_up_x = power.get_x();
-        if (power_up_x <= player_x && player_x <= power_up_x + constants::POWER_UP_WIDTH) {
-            PowerUpType type = power.get_power_up_type();
-            switch (type) {
-                case PowerUpType::SCATTER_BULLET:
-                    enable_scatter_bullet();
-                    break;
-                case PowerUpType::BOMB:
-                    break;
-            }
+    int player_y = player.get_y();
+    int x_left = power->get_x() - constants::POWER_UP_RADIUS;
+    int x_right = power->get_x() + constants::POWER_UP_RADIUS;
+    int y_bottom = power->get_y() + constants::POWER_UP_RADIUS;
+    if (x_left <= player_x && player_x <= x_right && y_bottom >= player_y) {
+        switch (power->get_power_up_type()) {
+            case PowerUpType::BOMB:
+                break;
+            case PowerUpType::SCATTER_BULLET:
+                enable_scatter_bullet();
+                break;
         }
     }
+}
+
+void Game::power_up_bounds_check() {
+    for (PowerUp *&p: power_ups) {
+        int y = p->get_y();
+        if (y >= constants::WINDOW_HEIGHT) {
+            delete p;
+            p = nullptr;
+        }
+    }
+    vector<PowerUp *> new_power_ups;
+    for (PowerUp *&p: power_ups) {
+        if (p != nullptr) {
+            new_power_ups.push_back(p);
+        }
+    }
+    power_ups = new_power_ups;
 }
 
 void Game::handle_scatter_bullets(double x, double y) {
@@ -267,7 +281,6 @@ void Game::scatter_bullet_bound_check(ScatterBullet *&bullet) {
     if (bullet_x <= 0 || bullet_x >= constants::WINDOW_WIDTH) {
         bullet->set_x_vel(-1.0 * bullet_x_vel);
     } else if (bullet_y <= 0 || bullet_y >= constants::WINDOW_HEIGHT - constants::BASE_HEIGHT) {
-        std::cout << "HIT TOP CEILING: " << bullet_x << " " << bullet_y << std::endl;
         bullet->set_y_vel(-1.0 * bullet_y_vel);
     }
 }
@@ -279,5 +292,17 @@ void Game::deactivate_scatter_bullets(ScatterBullet *&bullet) {
         delete bullet;
         bullet = nullptr;
     }
+}
+
+void Game::generate_power_ups() {
+    int elapsed = get_elapsed_time();
+    if (elapsed > 0 && elapsed % 5 == 0) {
+        std::cout << "ELAPSED TIME: " << elapsed << std::endl;
+        cout << "REACHED" << endl;
+        power_ups.push_back(new PowerUp(0, constants::WINDOW_WIDTH / 2, PowerUpType::SCATTER_BULLET));
+    }
+//    if (fmod(elapsed, 20.0) == 0 && elapsed > 0) {
+//        power_ups.push_back(new PowerUp(0, constants::WINDOW_WIDTH / 2, PowerUpType::BOMB));
+//    }
 }
 

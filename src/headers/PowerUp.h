@@ -6,6 +6,8 @@
 #define CMAKESFMLPROJECT_POWERUP_H
 
 #include "PowerUpTypes.h"
+#include <chrono>
+#include <ctime>
 
 class PowerUp {
 private:
@@ -25,6 +27,14 @@ public:
 
     PowerUpType get_power_up_type() {
         return type;
+    }
+
+    void set_x(int new_x) {
+        x = new_x;
+    }
+
+    void set_y(int new_y) {
+        y = new_y;
     }
 };
 

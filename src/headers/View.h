@@ -52,6 +52,12 @@ public:
     }
 
     void draw_scatter_bullets();
+
+    void draw_power_ups();
+
+    void draw_scatter_bullets_power_up(PowerUp *&p);
+
+    void draw_bomb_power_up(PowerUp *&p);
 };
 
 

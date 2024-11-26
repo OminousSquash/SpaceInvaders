@@ -19,6 +19,8 @@
 
 #include <iostream>
 #include <vector>
+#include <ctime>
+#include <chrono>
 
 using namespace std;
 
@@ -30,21 +32,24 @@ private:
     vector<Shield> shields;
     vector<Invader> invaders;
     vector<InvaderBullet *> invader_bullets;
-    vector<PowerUp> power_ups;
+    vector<PowerUp *> power_ups;
     int num_invaders_alive;
     PlayerBullet *player_bullet;
     vector<ScatterBullet *> scatter_bullets;
     bool scatter_bullet_active;
     bool game_over;
-
+    std::chrono::time_point<std::chrono::steady_clock> creation_time;
 public:
     Game() : level(0),
              score(0),
              player_bullet(nullptr),
              invader_bullets(
                      vector<InvaderBullet *>(constants::NUM_INVADER_LEVELS * constants::NUM_INVADERS, nullptr)),
-             num_invaders_alive(constants::NUM_INVADERS * constants::NUM_INVADER_LEVELS), game_over(false),
-             scatter_bullet_active(true) {}
+             num_invaders_alive(constants::NUM_INVADERS * constants::NUM_INVADER_LEVELS),
+             game_over(false),
+             scatter_bullet_active(false),
+             power_ups(vector<PowerUp *>()),
+             creation_time(std::chrono::steady_clock::now()) {}
 
     void update_level();
 
@@ -132,7 +137,7 @@ public:
         game_over = true;
     }
 
-    void check_power_ups();
+    void check_player_power_up_collision(PowerUp *&p);
 
     void enable_scatter_bullet() {
         scatter_bullet_active = true;
@@ -159,6 +164,19 @@ public:
     void handle_scatter_bullets(double x, double y);
 
     void deactivate_scatter_bullets(ScatterBullet *&bullet);
+
+    vector<PowerUp *> &get_power_ups() {
+        return power_ups;
+    }
+
+    void generate_power_ups();
+
+    double get_elapsed_time() {
+        auto now = std::chrono::steady_clock::now();
+        return std::chrono::duration<double>(now - creation_time).count();
+    }
+
+    void power_up_bounds_check();
 };
 
 

@@ -23,6 +23,8 @@ namespace Actions {
     void scatter_bullet_movement(Game &g);
 
     void restart_game(Game &g);
+
+    void power_up_balls_movement(Game &g);
 }
 
 #endif //CMAKESFMLPROJECT_ACTIONHANDLER_H

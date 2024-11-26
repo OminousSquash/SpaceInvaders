@@ -170,6 +170,35 @@ void View::draw_scatter_bullets() {
     }
 }
 
+void View::draw_bomb_power_up(PowerUp *&p) {
+    sf::Vector2f center(p->get_x(), p->get_y());
+    sf::CircleShape circle(constants::POWER_UP_RADIUS);
+    circle.setOrigin(constants::POWER_UP_RADIUS, constants::POWER_UP_RADIUS);
+    circle.setPosition(center);
+    circle.setFillColor(sf::Color::Red);
+    window.draw(circle);
+}
+
+void View::draw_scatter_bullets_power_up(PowerUp *&p) {
+    sf::Vector2f center(p->get_x(), p->get_y());
+    sf::CircleShape circle(constants::POWER_UP_RADIUS);
+    circle.setOrigin(constants::POWER_UP_RADIUS, constants::POWER_UP_RADIUS);
+    circle.setPosition(center);
+    circle.setFillColor(sf::Color::Blue);
+    window.draw(circle);
+}
+
+void View::draw_power_ups() {
+    vector<PowerUp *> &power_ups = game.get_power_ups();
+    for (PowerUp *&p: power_ups) {
+        if (p->get_power_up_type() == PowerUpType::SCATTER_BULLET) {
+            draw_scatter_bullets_power_up(p);
+        } else if (p->get_power_up_type() == PowerUpType::BOMB) {
+            draw_bomb_power_up(p);
+        }
+    }
+}
+
 void View::update_screen() {
     window.clear(sf::Color::Black);
     if (game.is_game_over()) {
@@ -187,6 +216,7 @@ void View::update_screen() {
         display_lives();
         display_score();
         display_level();
+        draw_power_ups();
         draw_scatter_bullets();
     }
     window.display();
