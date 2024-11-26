@@ -16,9 +16,14 @@ private:
     int direction;
     int velocity;
     bool alive;
+    bool explode;
 public:
-    Invader(int position, int level) : level(level), position(position), direction(1),
-                                       velocity(constants::INVADER_VELOCITY), alive(true) {
+    Invader(int position, int level) :
+            level(level),
+            position(position), direction(1),
+            velocity(constants::INVADER_VELOCITY),
+            alive(true),
+            explode(true) {
         convert_x();
         convert_y();
     }
@@ -73,6 +78,14 @@ public:
 
     bool is_alive() {
         return alive;
+    }
+
+    bool should_explode() {
+        return explode;
+    }
+
+    void exploded() {
+        explode = false;
     }
 };
 

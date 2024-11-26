@@ -41,7 +41,7 @@ namespace constants {
     const int POWER_UP_FALL_VELOCITY = 5;
     const int SCATTER_POWER_DELAY = 5;
     const int BOMB_POWER_DELAY = 5;
-    const int INVADER_BULLET_RNG_THRESHOLD = 1e6 - 1e3;
+    const int INVADER_BULLET_RNG_THRESHOLD = 1e6 + 1;
 }
 
 #endif //CMAKESFMLPROJECT_CONSTANTS_H

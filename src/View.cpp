@@ -20,26 +20,84 @@ void View::draw_player() {
     Player &p = game.get_player();
     int player_x = p.get_x();
     int player_y = p.get_y();
-    sf::RectangleShape player;
-    player.setSize(sf::Vector2f(40, 40));
-    player.setPosition(player_x, player_y);
-    player.setFillColor(sf::Color::White);
-    window.draw(player);
+    static bool is_texture_loaded = false;
+    static sf::Texture player_texture;
+    // Load the texture only once
+    if (!is_texture_loaded) {
+        if (!player_texture.loadFromFile(
+                "/Users/varunsrinivasan/Documents/Player.png")) {
+            return;
+        }
+        is_texture_loaded = true;
+    }
+
+    sf::Sprite player_sprite;
+    player_sprite.setTexture(player_texture);
+
+    // Scale the sprite to match PLAYER_WIDTH and PLAYER_HEIGHT
+    player_sprite.setScale(
+            static_cast<float>(constants::PLAYER_WIDTH) / player_texture.getSize().x,
+            static_cast<float>(constants::PLAYER_HEIGHT) / player_texture.getSize().y
+    );
+
+    // Set the position of the sprite
+    player_sprite.setPosition(player_x, player_y);
+
+    // Draw the sprite
+    window.draw(player_sprite);
 }
 
 
 void View::draw_invaders() {
     vector<Invader> &invaders = game.get_invaders();
+    static bool invaders_loaded = false;
+    static sf::Texture invader_texture;
+    static bool explosion_loaded = false;
+    static sf::Texture explosion_texture;
+    if (!invaders_loaded) {
+        if (!invader_texture.loadFromFile(
+                "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Invader.png")) {
+            return;
+        }
+        invaders_loaded = true;
+    }
+
+    if (!explosion_loaded) {
+        if (!explosion_texture.loadFromFile(
+                "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Explosion.png")) {
+            return;
+        }
+        explosion_loaded = true;
+    }
+
     for (int i = 0; i < invaders.size(); i++) {
         Invader &invader = invaders[i];
         if (!invader.is_alive()) {
-            continue;
+            if (invader.should_explode()) {
+                sf::Sprite explosion_sprite;
+                explosion_sprite.setTexture(explosion_texture);
+                explosion_sprite.setScale(
+                        static_cast<float>(constants::INVADER_LENGTH) / explosion_texture.getSize().x,
+                        static_cast<float>(constants::INVADER_HEIGHT) / explosion_texture.getSize().y
+                );
+                explosion_sprite.setPosition(static_cast<float>(invader.get_x()), static_cast<float>(invader.get_y()));
+                window.draw(explosion_sprite);
+                invader.exploded();
+                continue;
+            } else {
+                continue;
+            }
         }
-        sf::RectangleShape inv_rect;
-        inv_rect.setPosition(invader.get_x(), invader.get_y());
-        inv_rect.setSize(sf::Vector2f(constants::INVADER_LENGTH, constants::INVADER_HEIGHT));
-        inv_rect.setFillColor(sf::Color::Red);
-        window.draw(inv_rect);
+        sf::Sprite invader_sprite;
+        invader_sprite.setTexture(invader_texture);
+        invader_sprite.setScale(
+                static_cast<float>(constants::INVADER_LENGTH) / invader_texture.getSize().x,
+                static_cast<float>(constants::INVADER_HEIGHT) / invader_texture.getSize().y
+        );
+
+        invader_sprite.setPosition(static_cast<float>(invader.get_x()), static_cast<float>(invader.get_y()));
+
+        window.draw(invader_sprite);
     }
 }
 
