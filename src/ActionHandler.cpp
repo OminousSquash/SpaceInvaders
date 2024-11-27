@@ -46,6 +46,29 @@ void Actions::invader_movement(std::vector<Invader> &invaders) {
     }
 }
 
+void Actions::player_rpg_movement(Game &g) {
+    int player_x = g.get_player().get_x();
+    int player_y = g.get_player().get_y();
+    if (g.is_rpg_active()) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
+            g.disable_rpg();
+            g.create_rpg(player_x, player_y);
+            return;
+        }
+        return;
+    }
+    RPG *&rpg = g.get_rpg();
+    if (rpg == nullptr) {
+        return;
+    }
+    int rpg_y = rpg->get_y();
+    rpg->set_y(rpg_y - constants::BULLET_VELOCITY);
+    g.check_rpg_invader_collisions();
+    g.check_rpg_bounds();
+    g.check_rpg_shield_collisions();
+}
+
+
 void Actions::player_bullet_movement(Game &g) {
     PlayerBullet *player_bullet = g.get_player_bullet();
     int player_x = g.get_player().get_x();
@@ -84,7 +107,6 @@ void Actions::invader_bullet_movement(Game &g) {
 
 void Actions::restart_game(Game &g) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-//        std::cout << "RESTART HIT" << std::endl;
         g.restart_game();
     }
 }

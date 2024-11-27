@@ -25,6 +25,8 @@ namespace Actions {
     void restart_game(Game &g);
 
     void power_up_balls_movement(Game &g);
+
+    void player_rpg_movement(Game &g);
 }
 
 #endif //CMAKESFMLPROJECT_ACTIONHANDLER_H

@@ -40,10 +40,12 @@ namespace constants {
     const int POWER_UP_RADIUS = 20;
     const int POWER_UP_FALL_VELOCITY = 5;
     const int SCATTER_POWER_DELAY = 5;
-    const int BOMB_POWER_DELAY = 5;
+    const int RPG_POWER_DELAY = 10;
     const int INVADER_BULLET_RNG_THRESHOLD = 1e6 + 1;
     const int SCATTER_BULLET_HEIGHT = 45;
     const int EXPLOSION_COUNTDOWN = 50;
+    const int RPG_BLAST_RADIUS = 500;
+    const int RPG_WIDTH = 10;
 }
 
 #endif //CMAKESFMLPROJECT_CONSTANTS_H

@@ -12,6 +12,8 @@
 class RPG : public Projectile {
 public:
     RPG() : Projectile() {}
+
+    RPG(int x, int y) : Projectile(x, y) {}
 };
 
 

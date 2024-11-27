@@ -36,9 +36,12 @@ private:
     int num_invaders_alive;
     PlayerBullet *player_bullet;
     vector<ScatterBullet *> scatter_bullets;
+    RPG *rpg;
     bool scatter_bullet_active;
+    bool rpg_active;
     bool game_over;
     std::chrono::time_point<std::chrono::steady_clock> time_of_scatter_power;
+    std::chrono::time_point<std::chrono::steady_clock> time_of_rpg_power;
 public:
     Game() : level(0),
              score(0),
@@ -49,7 +52,10 @@ public:
              game_over(false),
              scatter_bullet_active(false),
              power_ups(vector<PowerUp *>()),
-             time_of_scatter_power(std::chrono::steady_clock::now()) {}
+             rpg(nullptr),
+             rpg_active(false),
+             time_of_scatter_power(std::chrono::steady_clock::now()),
+             time_of_rpg_power(std::chrono::steady_clock::now()) {}
 
     void update_level();
 
@@ -176,7 +182,41 @@ public:
         return std::chrono::duration<double>(now - time_of_scatter_power).count();
     }
 
+
+    double get_time_since_last_rpg_power() {
+        auto now = std::chrono::steady_clock::now();
+        return std::chrono::duration<double>(now - time_of_rpg_power).count();
+    }
+
     void power_up_bounds_check();
+
+    RPG *&get_rpg() {
+        return rpg;
+    }
+
+    bool is_rpg_active() {
+        return rpg_active;
+    }
+
+    void disable_rpg() {
+        rpg_active = false;
+    }
+
+    void enable_rgp() {
+        rpg_active = true;
+    }
+
+    void create_rpg(int x, int y) {
+        rpg = new RPG(x, y);
+    }
+
+    void check_rpg_invader_collisions();
+
+    void check_rpg_bounds();
+
+    void check_rpg_shield_collisions();
+
+    void rpg_explosion(int centre_x, int centre_y);
 };
 
 

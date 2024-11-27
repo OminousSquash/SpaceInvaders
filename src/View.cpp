@@ -229,7 +229,7 @@ void View::draw_scatter_bullets() {
     }
 }
 
-void View::draw_bomb_power_up(PowerUp *&p) {
+void View::draw_rpg_power_up(PowerUp *&p) {
     sf::Vector2f center(p->get_x(), p->get_y());
     sf::CircleShape circle(constants::POWER_UP_RADIUS);
     circle.setOrigin(constants::POWER_UP_RADIUS, constants::POWER_UP_RADIUS);
@@ -252,10 +252,22 @@ void View::draw_power_ups() {
     for (PowerUp *&p: power_ups) {
         if (p->get_power_up_type() == PowerUpType::SCATTER_BULLET) {
             draw_scatter_bullets_power_up(p);
-        } else if (p->get_power_up_type() == PowerUpType::BOMB) {
-            draw_bomb_power_up(p);
+        } else if (p->get_power_up_type() == PowerUpType::RPG) {
+            draw_rpg_power_up(p);
         }
     }
+}
+
+void View::draw_rpg() {
+    RPG *&rpg = game.get_rpg();
+    if (rpg == nullptr) return;
+    int x = rpg->get_x();
+    int y = rpg->get_y();
+    sf::RectangleShape rect;
+    rect.setPosition(sf::Vector2f(static_cast<float>(x), static_cast<float>(y)));
+    rect.setSize(sf::Vector2f(constants::RPG_WIDTH, constants::BULLET_HEIGHT));
+    rect.setFillColor(sf::Color::Red);
+    window.draw(rect);
 }
 
 void View::update_screen() {
@@ -277,6 +289,7 @@ void View::update_screen() {
         display_level();
         draw_power_ups();
         draw_scatter_bullets();
+        draw_rpg();
     }
     window.display();
 }

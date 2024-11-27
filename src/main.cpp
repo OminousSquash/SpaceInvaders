@@ -39,8 +39,9 @@ int main() {
             Actions::player_bullet_movement(g);
             Actions::invader_bullet_movement(g);
             Actions::invader_movement(g.get_invaders());
-            Actions::scatter_bullet_movement(g);
             Actions::power_up_balls_movement(g);
+            Actions::scatter_bullet_movement(g);
+            Actions::player_rpg_movement(g);
         } else {
             Actions::restart_game(g);
             v.reactivate();

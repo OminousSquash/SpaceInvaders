@@ -7,7 +7,7 @@
 
 enum class PowerUpType {
     SCATTER_BULLET,
-    BOMB
+    RPG
 };
 
 #endif //CMAKESFMLPROJECT_POWERUPTYPES_H

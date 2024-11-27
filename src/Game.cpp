@@ -227,7 +227,8 @@ void Game::check_player_power_up_collision(PowerUp *&power) {
         power_y_top <= player_y &&
         player_y <= power_y_bottom) {
         switch (power->get_power_up_type()) {
-            case PowerUpType::BOMB:
+            case PowerUpType::RPG:
+                enable_rgp();
                 break;
             case PowerUpType::SCATTER_BULLET:
                 enable_scatter_bullet();
@@ -311,15 +312,72 @@ int get_random_in_range(int min, int max) {
 
 void Game::generate_power_ups() {
     double scatter_elapsed = get_time_since_last_scatter_power();
+    double rpg_elapsed = get_time_since_last_rpg_power();
     if (scatter_elapsed >= constants::SCATTER_POWER_DELAY) {
-//        cout << "POWERUPS CREATED" << endl;
         int random_x = get_random_in_range(constants::POWER_UP_RADIUS,
                                            constants::WINDOW_WIDTH - constants::POWER_UP_RADIUS);
         power_ups.push_back(new PowerUp(random_x, 0, PowerUpType::SCATTER_BULLET));
         time_of_scatter_power = std::chrono::steady_clock::now();
     }
-//    if (fmod(elapsed, 20.0) == 0 && elapsed > 0) {
-//        power_ups.push_back(new PowerUp(0, constants::WINDOW_WIDTH / 2, PowerUpType::BOMB));
-//    }
+    if (rpg_elapsed >= constants::RPG_POWER_DELAY) {
+        int random_x = get_random_in_range(constants::POWER_UP_RADIUS,
+                                           constants::WINDOW_WIDTH - constants::POWER_UP_RADIUS);
+        power_ups.push_back(new PowerUp(random_x, 0, PowerUpType::RPG));
+        time_of_rpg_power = std::chrono::steady_clock::now();
+    }
+}
+
+void Game::rpg_explosion(int centre_x, int centre_y) {
+    for (int i = 0; i < invaders.size(); i++) {
+        Invader &invader = invaders[i];
+        vector<pair<int, int>> coordinates = {{invader.get_x(),                             invader.get_y()},
+                                              {invader.get_x() + constants::INVADER_LENGTH, invader.get_y()},
+                                              {invader.get_x(),                             invader.get_y() +
+                                                                                            constants::INVADER_HEIGHT},
+                                              {invader.get_x() + constants::INVADER_LENGTH, invader.get_y() +
+                                                                                            constants::INVADER_HEIGHT}};
+        for (pair<int, int> &p: coordinates) {
+            int x = p.first;
+            int y = p.second;
+            if ((x - centre_x) * (x - centre_x) + (y - centre_y) * (y - centre_y) <= constants::RPG_BLAST_RADIUS) {
+                handle_player_bullet_collision(i);
+                break;
+            }
+        }
+    }
+}
+
+void Game::check_rpg_invader_collisions() {
+    if (rpg == nullptr) {
+        return;
+    }
+    int rpg_x = rpg->get_x();
+    int rpg_y = rpg->get_y();
+    for (int i = 0; i < invaders.size(); i++) {
+        Invader &invader = invaders[i];
+        int invader_x = invader.get_x();
+        int invader_y = invader.get_y();
+        if (!(invader_x + constants::INVADER_LENGTH < rpg_x || rpg_x + constants::RPG_WIDTH < invader_x) &&
+            rpg_y >= invader_y - constants::INVADER_HEIGHT) {
+            handle_player_bullet_collision(i);
+            rpg_explosion(rpg_x, rpg_y);
+        }
+    }
+}
+
+void Game::check_rpg_bounds() {
+    if (rpg == nullptr)
+        return;
+    int rpg_y = rpg->get_y();
+    if (rpg_y < 0) {
+        delete rpg;
+        rpg = nullptr;
+    }
+}
+
+void Game::check_rpg_shield_collisions() {
+    if (rpg == nullptr) {
+        return;
+    }
 }
 

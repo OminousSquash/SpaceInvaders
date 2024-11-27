@@ -57,7 +57,9 @@ public:
 
     void draw_scatter_bullets_power_up(PowerUp *&p);
 
-    void draw_bomb_power_up(PowerUp *&p);
+    void draw_rpg_power_up(PowerUp *&p);
+
+    void draw_rpg();
 };
 
 
