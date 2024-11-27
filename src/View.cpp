@@ -270,6 +270,36 @@ void View::draw_rpg() {
     window.draw(rect);
 }
 
+void View::draw_hitmarkers() {
+    static bool hitmarker_loaded = false;
+    static sf::Texture hitmarker_texture;
+    if (!hitmarker_loaded) {
+        if (!hitmarker_texture.loadFromFile(
+                "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Hitmarker.png")) {
+            return;
+        }
+        hitmarker_loaded = true;
+    }
+    if (!game.get_hit_power_up()) {
+        return;
+    }
+    game.disable_hit_power_up();
+    sf::Sprite hitmarker_sprite;
+    hitmarker_sprite.setTexture(hitmarker_texture);
+    // Scale the sprite to match PLAYER_WIDTH and PLAYER_HEIGHT
+    hitmarker_sprite.setScale(
+            static_cast<float>(constants::HITMARKER_LENGTH) / hitmarker_texture.getSize().x,
+            static_cast<float>(constants::HITMARKER_WIDTH) / hitmarker_texture.getSize().y
+    );
+
+    // Set the position of the sprite
+    hitmarker_sprite.setPosition(static_cast<float>(game.get_player().get_x() + constants::PLAYER_WIDTH / 2),
+                                 static_cast<float>(game.get_player().get_y()));
+
+    // Draw the sprite
+    window.draw(hitmarker_sprite);
+}
+
 void View::update_screen() {
     window.clear(sf::Color::Black);
     if (game.is_game_over()) {
@@ -290,6 +320,7 @@ void View::update_screen() {
         draw_power_ups();
         draw_scatter_bullets();
         draw_rpg();
+        draw_hitmarkers();
     }
     window.display();
 }

@@ -42,6 +42,7 @@ private:
     bool game_over;
     std::chrono::time_point<std::chrono::steady_clock> time_of_scatter_power;
     std::chrono::time_point<std::chrono::steady_clock> time_of_rpg_power;
+    bool hit_power_up;
 public:
     Game() : level(0),
              score(0),
@@ -55,7 +56,8 @@ public:
              rpg(nullptr),
              rpg_active(false),
              time_of_scatter_power(std::chrono::steady_clock::now()),
-             time_of_rpg_power(std::chrono::steady_clock::now()) {}
+             time_of_rpg_power(std::chrono::steady_clock::now()),
+             hit_power_up(false) {}
 
     void update_level();
 
@@ -217,6 +219,18 @@ public:
     void check_rpg_shield_collisions();
 
     void rpg_explosion(int centre_x, int centre_y);
+
+    bool get_hit_power_up() {
+        return hit_power_up;
+    }
+
+    void enable_hit_power_up() {
+        hit_power_up = true;
+    }
+
+    void disable_hit_power_up() {
+        hit_power_up = false;
+    }
 };
 
 

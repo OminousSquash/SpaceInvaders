@@ -60,6 +60,8 @@ public:
     void draw_rpg_power_up(PowerUp *&p);
 
     void draw_rpg();
+
+    void draw_hitmarkers();
 };
 
 

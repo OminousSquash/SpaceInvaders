@@ -46,6 +46,8 @@ namespace constants {
     const int EXPLOSION_COUNTDOWN = 50;
     const int RPG_BLAST_RADIUS = 100;
     const int RPG_WIDTH = 10;
+    const int HITMARKER_LENGTH = 15;
+    const int HITMARKER_WIDTH = 15;
 }
 
 #endif //CMAKESFMLPROJECT_CONSTANTS_H
