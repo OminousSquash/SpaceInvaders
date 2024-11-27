@@ -226,7 +226,6 @@ void Game::check_player_power_up_collision(PowerUp *&power) {
     if (!(power_x_left > player_x_right || player_x_left > power_x_right) &&
         power_y_top <= player_y &&
         player_y <= power_y_bottom) {
-        cout << "SCATTER POWER UP" << endl;
         switch (power->get_power_up_type()) {
             case PowerUpType::BOMB:
                 break;

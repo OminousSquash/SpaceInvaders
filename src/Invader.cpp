@@ -14,3 +14,4 @@ void Invader::convert_y() {
     this->y = constants::TOP_GAP + constants::LEVEL_GAP_SIZE * level + constants::INVADER_HEIGHT * level;
 }
 
+

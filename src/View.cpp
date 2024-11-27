@@ -74,7 +74,9 @@ void View::draw_invaders() {
         Invader &invader = invaders[i];
         if (!invader.is_alive()) {
             if (invader.should_explode()) {
-//                std::cout << "EXPLODE" << std::endl;
+                invader.start_explosion();
+            }
+            if (!invader.explosion_done()) {
                 sf::Sprite explosion_sprite;
                 explosion_sprite.setTexture(explosion_texture);
                 explosion_sprite.setScale(
@@ -83,11 +85,9 @@ void View::draw_invaders() {
                 );
                 explosion_sprite.setPosition(static_cast<float>(invader.get_x()), static_cast<float>(invader.get_y()));
                 window.draw(explosion_sprite);
-                invader.exploded();
+                invader.decrease_explosion_timer();
                 continue;
-            } else {
-                continue;
-            }
+            } else continue;
         }
         sf::Sprite invader_sprite;
         invader_sprite.setTexture(invader_texture);

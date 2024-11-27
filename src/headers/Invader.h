@@ -6,6 +6,7 @@
 #define CMAKESFMLPROJECT_INVADER_H
 
 #include "constants.h"
+#include <cmath>
 
 class Invader {
 private:
@@ -16,14 +17,16 @@ private:
     int direction;
     int velocity;
     bool alive;
-    bool explode;
+    bool exploded;
+    int explosion_timer;
 public:
     Invader(int position, int level) :
             level(level),
             position(position), direction(1),
             velocity(constants::INVADER_VELOCITY),
             alive(true),
-            explode(true) {
+            exploded(false),
+            explosion_timer(constants::EXPLOSION_COUNTDOWN) {
         convert_x();
         convert_y();
     }
@@ -81,11 +84,19 @@ public:
     }
 
     bool should_explode() {
-        return explode;
+        return !exploded;
     }
 
-    void exploded() {
-        explode = false;
+    void start_explosion() {
+        exploded = true;
+    }
+
+    void decrease_explosion_timer() {
+        explosion_timer = explosion_timer - 1 > 0 ? explosion_timer - 1 : 0;
+    }
+
+    bool explosion_done() {
+        return explosion_timer <= 0;
     }
 };
 
