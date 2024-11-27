@@ -330,6 +330,7 @@ void Game::generate_power_ups() {
 void Game::rpg_explosion(int centre_x, int centre_y) {
     for (int i = 0; i < invaders.size(); i++) {
         Invader &invader = invaders[i];
+        if (!invader.is_alive()) continue;
         vector<pair<int, int>> coordinates = {{invader.get_x(),                             invader.get_y()},
                                               {invader.get_x() + constants::INVADER_LENGTH, invader.get_y()},
                                               {invader.get_x(),                             invader.get_y() +
@@ -339,7 +340,8 @@ void Game::rpg_explosion(int centre_x, int centre_y) {
         for (pair<int, int> &p: coordinates) {
             int x = p.first;
             int y = p.second;
-            if ((x - centre_x) * (x - centre_x) + (y - centre_y) * (y - centre_y) <= constants::RPG_BLAST_RADIUS) {
+            if ((x - centre_x) * (x - centre_x) + (y - centre_y) * (y - centre_y) <=
+                constants::RPG_BLAST_RADIUS * constants::RPG_BLAST_RADIUS) {
                 handle_player_bullet_collision(i);
                 break;
             }
@@ -355,12 +357,15 @@ void Game::check_rpg_invader_collisions() {
     int rpg_y = rpg->get_y();
     for (int i = 0; i < invaders.size(); i++) {
         Invader &invader = invaders[i];
+        if (!invader.is_alive()) continue;
         int invader_x = invader.get_x();
         int invader_y = invader.get_y();
         if (!(invader_x + constants::INVADER_LENGTH < rpg_x || rpg_x + constants::RPG_WIDTH < invader_x) &&
-            rpg_y >= invader_y - constants::INVADER_HEIGHT) {
+            invader_y <= rpg_y && rpg_y <= invader_y + constants::INVADER_HEIGHT) {
             handle_player_bullet_collision(i);
             rpg_explosion(rpg_x, rpg_y);
+            delete rpg;
+            rpg = nullptr;
         }
     }
 }

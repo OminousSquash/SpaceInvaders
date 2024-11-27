@@ -52,7 +52,7 @@ void Actions::player_rpg_movement(Game &g) {
     if (g.is_rpg_active()) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
             g.disable_rpg();
-            g.create_rpg(player_x, player_y);
+            g.create_rpg(player_x + constants::PLAYER_WIDTH / 2, player_y);
             return;
         }
         return;
