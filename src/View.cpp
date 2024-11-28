@@ -8,6 +8,17 @@
 #include "headers/InvaderBullet.h"
 #include "headers/PlayerBullet.h"
 
+
+void View::load_textures() {
+    if (all_textures_loaded) return;
+    invader_texture.loadFromFile(constants::INVADER_PATH);
+    explosion_texture.loadFromFile(constants::EXPLOSION_IMAGE_PATH);
+    player_texture.loadFromFile(constants::PLAYER_IMAGE_PATH);
+    hitmarker_texture.loadFromFile(constants::HITMARKER_IMAGE_PATH);
+    roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
+    all_textures_loaded = true;
+}
+
 void View::draw_base() {
     sf::RectangleShape base;
     base.setSize(sf::Vector2f(constants::BASE_WIDTH, constants::BASE_HEIGHT));
@@ -20,17 +31,6 @@ void View::draw_player() {
     Player &p = game.get_player();
     int player_x = p.get_x();
     int player_y = p.get_y();
-    static bool is_texture_loaded = false;
-    static sf::Texture player_texture;
-    // Load the texture only once
-    if (!is_texture_loaded) {
-        if (!player_texture.loadFromFile(
-                "/Users/varunsrinivasan/Documents/Player.png")) {
-            return;
-        }
-        is_texture_loaded = true;
-    }
-
     sf::Sprite player_sprite;
     player_sprite.setTexture(player_texture);
 
@@ -50,26 +50,6 @@ void View::draw_player() {
 
 void View::draw_invaders() {
     vector<Invader> &invaders = game.get_invaders();
-    static bool invaders_loaded = false;
-    static sf::Texture invader_texture;
-    static bool explosion_loaded = false;
-    static sf::Texture explosion_texture;
-    if (!invaders_loaded) {
-        if (!invader_texture.loadFromFile(
-                "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Invader.png")) {
-            return;
-        }
-        invaders_loaded = true;
-    }
-
-    if (!explosion_loaded) {
-        if (!explosion_texture.loadFromFile(
-                "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Explosion.png")) {
-            return;
-        }
-        explosion_loaded = true;
-    }
-
     for (int i = 0; i < invaders.size(); i++) {
         Invader &invader = invaders[i];
         if (!invader.is_alive()) {
@@ -135,11 +115,7 @@ void View::draw_player_bullet() {
 }
 
 void View::display_lives() {
-    sf::Font roboto_font;
-    roboto_font.loadFromFile(
-            "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf");
     sf::Text lives_left_text;
-
     lives_left_text.setFont(roboto_font);
     lives_left_text.setString("LIVES LEFT: " + to_string(game.get_player().get_lives_left()));
     lives_left_text.setPosition(0, 0);
@@ -148,9 +124,6 @@ void View::display_lives() {
 }
 
 void View::display_score() {
-    sf::Font roboto_font;
-    roboto_font.loadFromFile(
-            "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf");
     sf::Text score_string;
     score_string.setFont(roboto_font);
     score_string.setPosition(0, constants::BUFFER);
@@ -160,9 +133,6 @@ void View::display_score() {
 }
 
 void View::display_level() {
-    sf::Font roboto_font;
-    roboto_font.loadFromFile(
-            "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf");
     sf::Text level_text;
     level_text.setFont(roboto_font);
     level_text.setString("LEVEL: " + to_string(game.get_level()));
@@ -172,9 +142,6 @@ void View::display_level() {
 }
 
 void View::display_game_over() {
-    sf::Font roboto_font;
-    roboto_font.loadFromFile(
-            "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf");
     sf::Text game_over;
     game_over.setFont(roboto_font);
     game_over.setCharacterSize(70);
@@ -271,15 +238,6 @@ void View::draw_rpg() {
 }
 
 void View::draw_hitmarkers() {
-    static bool hitmarker_loaded = false;
-    static sf::Texture hitmarker_texture;
-    if (!hitmarker_loaded) {
-        if (!hitmarker_texture.loadFromFile(
-                "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Hitmarker.png")) {
-            return;
-        }
-        hitmarker_loaded = true;
-    }
     if (!game.get_hit_power_up()) {
         return;
     }
@@ -308,6 +266,7 @@ void View::update_screen() {
     if (!View::get_process_input()) {
         display_game_over();
     } else {
+        load_textures();
         draw_base();
         draw_player();
         draw_invaders();

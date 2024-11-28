@@ -5,6 +5,9 @@
 #ifndef CMAKESFMLPROJECT_CONSTANTS_H
 #define CMAKESFMLPROJECT_CONSTANTS_H
 
+#include <string>
+#include <iostream>
+
 namespace constants {
     const int WINDOW_WIDTH = 1000;
     const int WINDOW_HEIGHT = 800;
@@ -48,6 +51,12 @@ namespace constants {
     const int RPG_WIDTH = 10;
     const int HITMARKER_LENGTH = 15;
     const int HITMARKER_WIDTH = 15;
+    const std::string EXPLOSION_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Explosion.png";
+    const std::string PLAYER_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Player.png";
+    const std::string HITMARKER_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Hitmarker.png";
+    const std::string RPG_IMAGE_PATH;
+    const std::string INVADER_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Invader.png";
+    const std::string ROBOTO_FONT_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf";
 }
 
 #endif //CMAKESFMLPROJECT_CONSTANTS_H

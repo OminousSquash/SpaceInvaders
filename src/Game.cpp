@@ -30,6 +30,7 @@ void Game::set_all_invaders() {
 }
 
 void Game::set_all_sheilds() {
+    shields.clear();
     for (int i = 0; i < constants::NUM_SHIELDS; i++) {
         Shield new_shield(
                 (i + 1) * constants::SHIELD_GAP +
@@ -232,6 +233,7 @@ void Game::hard_reset() {
     set_game_over();
     player.hard_reset();
     set_all_invaders();
+    set_all_sheilds();
     score = 0;
     level = 0;
 }
@@ -349,7 +351,49 @@ void Game::generate_power_ups() {
     }
 }
 
+int binary_search_less(vector<ShieldComponent> &arr, int target) {
+    // find largest i such that arr[i].x <= target
+    int low = 0;
+    int high = static_cast<int>(arr.size() - 1);
+    int ans = -1;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (arr[mid].get_x() <= target) {
+            ans = mid;
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return ans;
+}
+
+int binary_search_greater(vector<ShieldComponent> &arr, int target) {
+    // find the smallest index i such that arr[i].x >= target
+    int low = 0;
+    int high = static_cast<int>(arr.size() - 1);
+    int ans = -1;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (arr[mid].get_x() >= target) {
+            ans = mid;
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return ans;
+}
+
+bool is_point_in_cirle(int centre_x, int centre_y, int target_x, int target_y) {
+    return ((target_x - centre_x) * (target_x - centre_x) + (target_y - centre_y) * (target_y - centre_y)
+            <= constants::RPG_BLAST_RADIUS * constants::RPG_BLAST_RADIUS);
+}
+
 void Game::rpg_explosion(int centre_x, int centre_y) {
+    int left_impact = centre_x - constants::RPG_BLAST_RADIUS;
+    int right_impact = centre_x + constants::RPG_BLAST_RADIUS;
+
     for (int i = 0; i < invaders.size(); i++) {
         Invader &invader = invaders[i];
         if (!invader.is_alive()) continue;
@@ -362,10 +406,23 @@ void Game::rpg_explosion(int centre_x, int centre_y) {
         for (pair<int, int> &p: coordinates) {
             int x = p.first;
             int y = p.second;
-            if ((x - centre_x) * (x - centre_x) + (y - centre_y) * (y - centre_y) <=
-                constants::RPG_BLAST_RADIUS * constants::RPG_BLAST_RADIUS) {
+            if (is_point_in_cirle(centre_x, centre_y, x, y)) {
                 handle_player_bullet_collision(i);
                 break;
+            }
+        }
+    }
+    cout << "REACHED HERE" << endl;
+    for (Shield &shield: shields) {
+        vector<ShieldComponent> &shield_components = shield.get_shield_components();
+        int x_begin = shield.get_x_begin();
+        int x_end = x_begin + constants::SHIELD_COMPONENT_WIDTH * constants::NUM_SHIELD_COMPONENTS;
+        if (x_begin <= right_impact && left_impact <= x_end) {
+            for (ShieldComponent &sc: shield_components) {
+                if (is_point_in_cirle(centre_x, centre_y, sc.get_x(), sc.get_y()) ||
+                    is_point_in_cirle(centre_x, centre_y, sc.get_x(), sc.get_y() - sc.get_height())) {
+                    handle_player_bullet_collision(sc);
+                }
             }
         }
     }
@@ -405,6 +462,32 @@ void Game::check_rpg_bounds() {
 void Game::check_rpg_shield_collisions() {
     if (rpg == nullptr) {
         return;
+    }
+
+    int rpg_x = rpg->get_x();
+    int rpg_y = rpg->get_y();
+
+    for (int i = 0; i < constants::NUM_SHIELDS; i++) {
+        Shield &sheild = shields[i];
+        int x_begin = sheild.get_x_begin();
+        int x_end = sheild.get_x_begin() + (constants::NUM_SHIELD_COMPONENTS * (constants::SHIELD_COMPONENT_WIDTH));
+        if (x_end < rpg_x || rpg_x + constants::RPG_WIDTH < x_begin) {
+            continue;
+        }
+        for (int j = 0; j < constants::NUM_SHIELD_COMPONENTS; j++) {
+            ShieldComponent &sc = sheild.get_shield_components()[j];
+            int sc_x = sc.get_x();
+            int sc_y = sc.get_y();
+            if (sc_x <= rpg_x && rpg_x < sc_x + constants::SHIELD_COMPONENT_WIDTH &&
+                sc_y - sc.get_height() <= rpg_y && rpg_y <= sc_y) {
+                delete rpg;
+                rpg = nullptr;
+                handle_player_bullet_collision(sc);
+                cout << "RPG SHIELD COLLISION" << endl;
+                rpg_explosion(rpg_x, rpg_y);
+                return;
+            }
+        }
     }
 }
 

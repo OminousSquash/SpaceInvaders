@@ -14,8 +14,21 @@ private:
     sf::RenderWindow &window;
     Game &game;
     bool process_input;
+    bool all_textures_loaded;
+    sf::Texture invader_texture;
+    sf::Texture player_texture;
+    sf::Texture explosion_texture;
+    sf::Texture hitmarker_texture;
+    sf::Texture rpg_texture;
+    sf::Font roboto_font;
+
 public:
-    View(Game &game, sf::RenderWindow &window) : game(game), window(window), process_input(true) {}
+
+    View(Game &game, sf::RenderWindow &window) :
+            game(game),
+            window(window),
+            process_input(true),
+            all_textures_loaded(false) {}
 
     void update_screen();
 
@@ -62,6 +75,8 @@ public:
     void draw_rpg();
 
     void draw_hitmarkers();
+
+    void load_textures();
 };
 
 
