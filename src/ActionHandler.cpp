@@ -11,6 +11,7 @@
 #include "headers/Game.h"
 #include <iostream>
 
+
 void Actions::player_movement(Game &g) {
     Player &p = g.get_player();
     int player_x = p.get_x();
@@ -78,10 +79,19 @@ void Actions::player_bullet_movement(Game &g) {
         g.disable_scatter_bullet();
         return;
     }
-    if (player_bullet == nullptr && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        player_bullet = new PlayerBullet(player_x + constants::PLAYER_WIDTH / 2, player_y);
-        g.set_player_bullet(player_bullet);
+
+    if (player_bullet == nullptr) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+            if (!SPACE_PRESSED) {
+                player_bullet = new PlayerBullet(player_x + constants::PLAYER_WIDTH / 2, player_y);
+                g.set_player_bullet(player_bullet);
+                SPACE_PRESSED = true;
+            }
+        } else {
+            SPACE_PRESSED = false;
+        }
     }
+
     if (player_bullet == nullptr) {
         return;
     }

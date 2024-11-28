@@ -12,6 +12,9 @@
 #include <vector>
 
 namespace Actions {
+
+    static bool SPACE_PRESSED = false;
+
     void player_movement(Game &g);
 
     void invader_movement(std::vector<Invader> &invaders);

@@ -93,7 +93,7 @@ void Game::check_player_bullet_shield_collision() {
             int sc_x = sc.get_x();
             int sc_y = sc.get_y();
             if (sc_x <= bullet_x && bullet_x < sc_x + constants::SHIELD_COMPONENT_WIDTH && sc.is_collidable() &&
-                bullet_y >= sc_y && bullet_y <= sc_y + sc.get_height()) {
+                bullet_y >= sc_y - sc.get_height() && bullet_y <= sc_y) {
                 delete player_bullet;
                 player_bullet = nullptr;
                 handle_player_bullet_collision(sc);
@@ -184,8 +184,29 @@ void Game::cleanup() {
             invader_bullet = nullptr;
         }
     }
+
+    for (ScatterBullet *&bullet: scatter_bullets) {
+        if (bullet != nullptr) {
+            delete bullet;
+            bullet = nullptr;
+        }
+    }
+
+    disable_rpg();
+    disable_scatter_bullet();
+    disable_hit_power_up();
+
+    for (PowerUp *&p: power_ups) {
+        if (p != nullptr) {
+            delete p;
+            p = nullptr;
+        }
+    }
+
     invader_bullets.clear(); // Clear the current vector after deallocation
     invader_bullets.resize(constants::NUM_INVADER_LEVELS * constants::NUM_INVADERS, nullptr); // Reinitialize
+    scatter_bullets.clear();
+    power_ups.clear();
 
     if (player_bullet != nullptr) {
         delete player_bullet;

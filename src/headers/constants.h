@@ -8,7 +8,7 @@
 namespace constants {
     const int WINDOW_WIDTH = 1000;
     const int WINDOW_HEIGHT = 800;
-    const int BULLET_VELOCITY = 9;
+    const int BULLET_VELOCITY = 6;
     const int INVADER_VELOCITY = 1;
     const int START_X = 200;
     const int START_Y = 0;
