@@ -20,7 +20,6 @@ private:
     sf::Texture explosion_texture;
     sf::Texture hitmarker_texture;
     sf::Texture rpg_texture;
-    sf::Font roboto_font;
 
 public:
 
@@ -77,6 +76,10 @@ public:
     void draw_hitmarkers();
 
     void load_textures();
+
+    void start_screen();
+
+    void controls_screen();
 };
 
 

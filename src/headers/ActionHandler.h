@@ -30,6 +30,10 @@ namespace Actions {
     void power_up_balls_movement(Game &g);
 
     void player_rpg_movement(Game &g);
+
+    void start_game(Game &g);
+
+    void view_rules(Game &g);
 }
 
 #endif //CMAKESFMLPROJECT_ACTIONHANDLER_H

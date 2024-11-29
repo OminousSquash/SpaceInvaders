@@ -32,7 +32,10 @@ int main() {
                 window.close();
             }
         }
-        if (v.get_process_input()) {
+        if (!g.has_game_started()) {
+            Actions::start_game(g);
+            Actions::view_rules(g);
+        } else if (v.get_process_input()) {
             g.generate_invader_bullets();
             g.generate_power_ups();
             Actions::player_movement(g);

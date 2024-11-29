@@ -15,7 +15,6 @@ void View::load_textures() {
     explosion_texture.loadFromFile(constants::EXPLOSION_IMAGE_PATH);
     player_texture.loadFromFile(constants::PLAYER_IMAGE_PATH);
     hitmarker_texture.loadFromFile(constants::HITMARKER_IMAGE_PATH);
-    roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
     all_textures_loaded = true;
 }
 
@@ -115,6 +114,8 @@ void View::draw_player_bullet() {
 }
 
 void View::display_lives() {
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
     sf::Text lives_left_text;
     lives_left_text.setFont(roboto_font);
     lives_left_text.setString("LIVES LEFT: " + to_string(game.get_player().get_lives_left()));
@@ -124,6 +125,8 @@ void View::display_lives() {
 }
 
 void View::display_score() {
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
     sf::Text score_string;
     score_string.setFont(roboto_font);
     score_string.setPosition(0, constants::BUFFER);
@@ -133,6 +136,8 @@ void View::display_score() {
 }
 
 void View::display_level() {
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
     sf::Text level_text;
     level_text.setFont(roboto_font);
     level_text.setString("LEVEL: " + to_string(game.get_level()));
@@ -142,6 +147,8 @@ void View::display_level() {
 }
 
 void View::display_game_over() {
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
     sf::Text game_over;
     game_over.setFont(roboto_font);
     game_over.setCharacterSize(70);
@@ -258,12 +265,50 @@ void View::draw_hitmarkers() {
     window.draw(hitmarker_sprite);
 }
 
+void View::start_screen() {
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
+    sf::Text start_page;
+    start_page.setFont(roboto_font);
+    start_page.setCharacterSize(70);
+    start_page.setFillColor(sf::Color::White);
+    start_page.setString("PRESS SPACE TO START\n");
+    start_page.setPosition(constants::WINDOW_WIDTH / 5 - 100, constants::WINDOW_HEIGHT / 3 + 80);
+    window.draw(start_page);
+}
+
+void View::controls_screen() {
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
+    sf::Text controls_page;
+    controls_page.setFont(roboto_font);
+    controls_page.setCharacterSize(50);
+    controls_page.setFillColor(sf::Color::White);
+
+    std::string text = "USE A & D TO MOVE\n";
+    text += "USE SPACEBAR TO SHOOT\n";
+    text += "BLUE CIRCLE IS SCATTER SHOT\nRED CIRCLE IS RPG\n";
+    text += "USE G TO SHOOT RPG\n";
+    controls_page.setPosition(100, 210);
+    controls_page.setString(text);
+    window.draw(controls_page);
+    std::string back_text = "USE B TO GO BACK TO START";
+    controls_page.setCharacterSize(20);
+    controls_page.setPosition(100, 510);
+    controls_page.setString(back_text);
+    window.draw(controls_page);
+}
+
+
 void View::update_screen() {
     window.clear(sf::Color::Black);
     if (game.is_game_over()) {
         View::disactivate();
-    }
-    if (!View::get_process_input()) {
+    } else if (!game.has_game_started() && !game.is_on_game_rules()) {
+        start_screen();
+    } else if (!game.has_game_started() && game.is_on_game_rules()) {
+        controls_screen();
+    } else if (!View::get_process_input()) {
         display_game_over();
     } else {
         load_textures();

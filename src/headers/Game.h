@@ -26,6 +26,7 @@ using namespace std;
 
 class Game {
 private:
+
     int level;
     int score;
     Player player;
@@ -40,9 +41,12 @@ private:
     bool scatter_bullet_active;
     bool rpg_active;
     bool game_over;
+    bool game_start;
+    bool game_rules;
     std::chrono::time_point<std::chrono::steady_clock> time_of_scatter_power;
     std::chrono::time_point<std::chrono::steady_clock> time_of_rpg_power;
     bool hit_power_up;
+
 public:
     Game() : level(0),
              score(0),
@@ -57,7 +61,9 @@ public:
              rpg_active(false),
              time_of_scatter_power(std::chrono::steady_clock::now()),
              time_of_rpg_power(std::chrono::steady_clock::now()),
-             hit_power_up(false) {}
+             hit_power_up(false),
+             game_start(false),
+             game_rules(false) {}
 
     void update_level();
 
@@ -230,6 +236,26 @@ public:
 
     void disable_hit_power_up() {
         hit_power_up = false;
+    }
+
+    void start_game() {
+        game_start = true;
+    }
+
+    bool has_game_started() {
+        return game_start;
+    }
+
+    bool is_on_game_rules() {
+        return game_rules;
+    }
+
+    bool view_game_rules() {
+        game_rules = true;
+    }
+
+    bool unview_game_rules() {
+        game_rules = false;
     }
 };
 

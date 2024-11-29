@@ -146,3 +146,17 @@ void Actions::power_up_balls_movement(Game &g) {
         g.power_up_bounds_check();
     }
 }
+
+void Actions::start_game(Game &g) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !g.is_on_game_rules()) {
+        g.start_game();
+    }
+}
+
+void Actions::view_rules(Game &g) {
+    if (!g.has_game_started() && !g.is_on_game_rules() && sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+        g.view_game_rules();
+    } else if (!g.has_game_started() && g.is_on_game_rules() && sf::Keyboard::isKeyPressed(sf::Keyboard::B)) {
+        g.unview_game_rules();
+    }
+}

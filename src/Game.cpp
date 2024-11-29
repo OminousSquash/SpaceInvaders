@@ -412,7 +412,6 @@ void Game::rpg_explosion(int centre_x, int centre_y) {
             }
         }
     }
-    cout << "REACHED HERE" << endl;
     for (Shield &shield: shields) {
         vector<ShieldComponent> &shield_components = shield.get_shield_components();
         int x_begin = shield.get_x_begin();
@@ -483,7 +482,6 @@ void Game::check_rpg_shield_collisions() {
                 delete rpg;
                 rpg = nullptr;
                 handle_player_bullet_collision(sc);
-                cout << "RPG SHIELD COLLISION" << endl;
                 rpg_explosion(rpg_x, rpg_y);
                 return;
             }
