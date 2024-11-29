@@ -54,7 +54,7 @@ namespace constants {
     const std::string EXPLOSION_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Explosion.png";
     const std::string PLAYER_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Player.png";
     const std::string HITMARKER_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Hitmarker.png";
-    const std::string RPG_IMAGE_PATH;
+    const std::string RPG_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/RPG.png";
     const std::string INVADER_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Invader.png";
     const std::string ROBOTO_FONT_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf";
 }
