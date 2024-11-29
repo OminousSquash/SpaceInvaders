@@ -147,6 +147,7 @@ void View::display_level() {
 }
 
 void View::display_game_over() {
+    cout << "DISPLAY GAME OVER" << endl;
     sf::Font roboto_font;
     roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
     sf::Text game_over;
@@ -308,9 +309,10 @@ void View::update_screen() {
         start_screen();
     } else if (!game.has_game_started() && game.is_on_game_rules()) {
         controls_screen();
-    } else if (!View::get_process_input()) {
+    }
+    if (!View::get_process_input()) {
         display_game_over();
-    } else {
+    } else if (game.has_game_started()) {
         load_textures();
         draw_base();
         draw_player();

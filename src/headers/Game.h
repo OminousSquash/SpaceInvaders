@@ -250,11 +250,11 @@ public:
         return game_rules;
     }
 
-    bool view_game_rules() {
+    void view_game_rules() {
         game_rules = true;
     }
 
-    bool unview_game_rules() {
+    void unview_game_rules() {
         game_rules = false;
     }
 };
