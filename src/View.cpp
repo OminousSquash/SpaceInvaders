@@ -8,6 +8,28 @@
 #include "headers/constants.h"
 #include <SFML/Graphics.hpp>
 
+static inline sf::Sprite makeSprite(const sf::Texture& tex, float w, float h,
+                                    float x, float y) {
+    sf::Sprite s(tex);
+    s.setOrigin(tex.getSize().x * 0.5f, tex.getSize().y * 0.5f);
+    s.setScale(w / tex.getSize().x, h / tex.getSize().y);
+    s.setPosition(x + w * 0.5f, y + h * 0.5f);
+    return s;
+}
+
+static inline void drawWithGlow(sf::RenderWindow& win, const sf::Sprite& s,
+                                sf::Color glow = sf::Color(0,255,180,90),
+                                float scale = 1.18f, int passes = 2) {
+    for (int i=0;i<passes;i++) {
+        sf::Sprite g = s;
+        g.setColor(glow);
+        g.setScale(s.getScale().x * (scale + i*0.03f),
+                   s.getScale().y * (scale + i*0.03f));
+        win.draw(g, sf::BlendAdd);
+    }
+    win.draw(s);
+}
+
 void View::load_textures() {
   if (all_textures_loaded)
     return;
@@ -16,6 +38,7 @@ void View::load_textures() {
   player_texture.loadFromFile(constants::PLAYER_IMAGE_PATH);
   hitmarker_texture.loadFromFile(constants::HITMARKER_IMAGE_PATH);
   rpg_texture.loadFromFile(constants::RPG_IMAGE_PATH);
+  powerup_texture.loadFromFile(constants::POWER_UP_PATH);
   all_textures_loaded = true;
 }
 
@@ -29,61 +52,52 @@ void View::draw_base() {
 
 void View::draw_player() {
   Player &p = game.get_player();
-  int player_x = p.get_x();
-  int player_y = p.get_y();
-  sf::Sprite player_sprite;
-  player_sprite.setTexture(player_texture);
+  sf::Sprite player_sprite = makeSprite(
+      player_texture,
+      (float)constants::PLAYER_WIDTH,
+      (float)constants::PLAYER_HEIGHT,
+      (float)p.get_x(),
+      (float)p.get_y());
 
-  // Scale the sprite to match PLAYER_WIDTH and PLAYER_HEIGHT
-  player_sprite.setScale(static_cast<float>(constants::PLAYER_WIDTH) /
-                             player_texture.getSize().x,
-                         static_cast<float>(constants::PLAYER_HEIGHT) /
-                             player_texture.getSize().y);
+  // subtle color so it matches background
+  player_sprite.setColor(sf::Color(190, 255, 190));
 
-  // Set the position of the sprite
-  player_sprite.setPosition(player_x, player_y);
-
-  // Draw the sprite
-  window.draw(player_sprite);
+  drawWithGlow(window, player_sprite, sf::Color(60,255,120,90));
 }
 
 void View::draw_invaders() {
-  vector<Invader> &invaders = game.get_invaders();
-  for (int i = 0; i < invaders.size(); i++) {
-    Invader &invader = invaders[i];
-    if (!invader.is_alive()) {
-      if (invader.should_explode()) {
-        invader.start_explosion();
+  auto& invaders = game.get_invaders();
+  const float t = frameClock.getElapsedTime().asSeconds();
+
+  for (size_t i = 0; i < invaders.size(); ++i) {
+    Invader& inv = invaders[i];
+    if (!inv.is_alive()) {
+      if (inv.should_explode()) inv.start_explosion();
+      if (!inv.explosion_done()) {
+        sf::Sprite boom = makeSprite(explosion_texture,
+                                     (float)constants::INVADER_LENGTH,
+                                     (float)constants::INVADER_HEIGHT,
+                                     (float)inv.get_x(), (float)inv.get_y());
+        window.draw(boom, sf::BlendAdd);
+        inv.decrease_explosion_timer();
       }
-      if (!invader.explosion_done()) {
-        sf::Sprite explosion_sprite;
-        explosion_sprite.setTexture(explosion_texture);
-        explosion_sprite.setScale(
-            static_cast<float>(constants::INVADER_LENGTH) /
-                explosion_texture.getSize().x,
-            static_cast<float>(constants::INVADER_HEIGHT) /
-                explosion_texture.getSize().y);
-        explosion_sprite.setPosition(static_cast<float>(invader.get_x()),
-                                     static_cast<float>(invader.get_y()));
-        window.draw(explosion_sprite);
-        invader.decrease_explosion_timer();
-        continue;
-      } else
-        continue;
+      continue;
     }
-    sf::Sprite invader_sprite;
-    invader_sprite.setTexture(invader_texture);
-    invader_sprite.setScale(static_cast<float>(constants::INVADER_LENGTH) /
-                                invader_texture.getSize().x,
-                            static_cast<float>(constants::INVADER_HEIGHT) /
-                                invader_texture.getSize().y);
 
-    invader_sprite.setPosition(static_cast<float>(invader.get_x()),
-                               static_cast<float>(invader.get_y()));
+    sf::Sprite s = makeSprite(invader_texture,
+                              (float)constants::INVADER_LENGTH,
+                              (float)constants::INVADER_HEIGHT,
+                              (float)inv.get_x(), (float)inv.get_y());
 
-    window.draw(invader_sprite);
+    s.move(0.f, std::sin((t*3.f) + (inv.get_x()*0.05f)) * 2.f);
+
+    sf::Uint8 g = 220 - (inv.get_y() / 12 % 3) * 20;
+    s.setColor(sf::Color(100, g, 100));
+
+    drawWithGlow(window, s, sf::Color(0,255,160,80));
   }
 }
+
 
 void View::draw_invader_bullets() {
   vector<InvaderBullet *> invader_bullets = game.get_invader_bullets();
@@ -104,18 +118,24 @@ void View::draw_invader_bullets() {
 }
 
 void View::draw_player_bullet() {
-  PlayerBullet *player_bullet = game.get_player_bullet();
-  if (player_bullet == nullptr) {
-    return;
-  }
-  sf::Vertex line[] = {
-      sf::Vertex(sf::Vector2f(player_bullet->get_x(), player_bullet->get_y()),
-                 sf::Color::White),
-      sf::Vertex(
-          sf::Vector2f(player_bullet->get_x(),
-                       player_bullet->get_y() - constants::BULLET_HEIGHT),
-          sf::Color::White)};
-  window.draw(line, 2, sf::Lines);
+    PlayerBullet *player_bullet = game.get_player_bullet();
+    if (player_bullet == nullptr) {
+        return;
+    }
+
+    float bulletWidth  = 3.2f;
+    float bulletHeight = (float)constants::BULLET_HEIGHT;
+
+    sf::RectangleShape bullet(sf::Vector2f(bulletWidth, bulletHeight));
+    bullet.setFillColor(sf::Color(230, 255, 255)); // light cyan/white
+    bullet.setOrigin(bulletWidth / 2.f, bulletHeight); // origin at bottom center
+
+    bullet.setPosition(
+        static_cast<float>(player_bullet->get_x()),
+        static_cast<float>(player_bullet->get_y())
+    );
+
+    window.draw(bullet);
 }
 
 void View::display_lives() {
@@ -194,44 +214,80 @@ void View::draw_shields() {
 }
 
 void View::draw_scatter_bullets() {
-  vector<ScatterBullet *> &scatter_bullets = game.get_scatter_bullets();
-  for (ScatterBullet *&bullet : scatter_bullets) {
-    if (bullet != nullptr) {
-      double start_x = bullet->get_x();
-      double start_y = bullet->get_y();
-      double x_length = 1.0 * constants::SCATTER_BULLET_HEIGHT *
-                        bullet->get_x_vel() / constants::BULLET_VELOCITY;
-      double y_length = 1.0 * constants::SCATTER_BULLET_HEIGHT *
-                        bullet->get_y_vel() / constants::BULLET_VELOCITY;
-      double end_x = 1.0 * start_x + x_length;
-      double end_y = 1.0 * start_y - y_length;
-      sf::Vertex line[] = {sf::Vertex(sf::Vector2f(static_cast<float>(start_x),
-                                                   static_cast<float>(start_y)),
-                                      sf::Color::Green),
-                           sf::Vertex(sf::Vector2f(static_cast<float>(end_x),
-                                                   static_cast<float>(end_y)),
-                                      sf::Color::Blue)};
-      window.draw(line, 2, sf::Lines);
+    vector<ScatterBullet *> &scatter_bullets = game.get_scatter_bullets();
+
+    for (ScatterBullet *&bullet : scatter_bullets) {
+        if (bullet == nullptr) continue;
+
+        float start_x = (float)bullet->get_x();
+        float start_y = (float)bullet->get_y();
+
+        float x_length = constants::SCATTER_BULLET_HEIGHT *
+                         bullet->get_x_vel() / constants::BULLET_VELOCITY;
+        float y_length = constants::SCATTER_BULLET_HEIGHT *
+                         bullet->get_y_vel() / constants::BULLET_VELOCITY;
+        float end_x = start_x + x_length;
+        float end_y = start_y - y_length;
+
+        sf::Vector2f dir(end_x - start_x, end_y - start_y);
+        float len = std::sqrt(dir.x * dir.x + dir.y * dir.y);
+        if (len == 0) continue;
+
+        dir /= len;
+
+        sf::Vector2f perp(-dir.y, dir.x);
+
+        float halfWidth = 1.6f;
+        perp *= halfWidth;
+
+        sf::VertexArray quad(sf::TrianglesStrip, 4);
+
+        sf::Color baseColor(0, 200, 255);   // cyan
+        sf::Color tipColor(0, 255, 180);    // greenish cyan
+
+        quad[0].position = sf::Vector2f(start_x, start_y) + perp;
+        quad[1].position = sf::Vector2f(start_x, start_y) - perp;
+        quad[2].position = sf::Vector2f(end_x, end_y) + perp;
+        quad[3].position = sf::Vector2f(end_x, end_y) - perp;
+
+        quad[0].color = baseColor;
+        quad[1].color = baseColor;
+        quad[2].color = tipColor;
+        quad[3].color = tipColor;
+
+        window.draw(quad);
     }
-  }
 }
 
 void View::draw_rpg_power_up(PowerUp *&p) {
-  sf::Vector2f center(p->get_x(), p->get_y());
-  sf::CircleShape circle(constants::POWER_UP_RADIUS);
-  circle.setOrigin(constants::POWER_UP_RADIUS, constants::POWER_UP_RADIUS);
-  circle.setPosition(center);
-  circle.setFillColor(sf::Color::Red);
-  window.draw(circle);
+    sf::Sprite sprite;
+    sprite.setTexture(powerup_texture);
+
+    float scale = (constants::POWER_UP_RADIUS * 2.f) / powerup_texture.getSize().x;
+    sprite.setScale(scale, scale);
+
+    sprite.setOrigin(powerup_texture.getSize().x / 2.f, powerup_texture.getSize().y / 2.f);
+
+    sprite.setPosition(p->get_x(), p->get_y());
+
+    sprite.setColor(sf::Color(255, 120, 120));
+
+    window.draw(sprite);
 }
 
 void View::draw_scatter_bullets_power_up(PowerUp *&p) {
-  sf::Vector2f center(p->get_x(), p->get_y());
-  sf::CircleShape circle(constants::POWER_UP_RADIUS);
-  circle.setOrigin(constants::POWER_UP_RADIUS, constants::POWER_UP_RADIUS);
-  circle.setPosition(center);
-  circle.setFillColor(sf::Color::Blue);
-  window.draw(circle);
+    sf::Sprite sprite;
+    sprite.setTexture(powerup_texture);
+
+    float scale = (constants::POWER_UP_RADIUS * 2.f) / powerup_texture.getSize().x;
+    sprite.setScale(scale, scale);
+
+    sprite.setOrigin(powerup_texture.getSize().x / 2.f, powerup_texture.getSize().y / 2.f);
+    sprite.setPosition(p->get_x(), p->get_y());
+
+    sprite.setColor(sf::Color(120, 180, 255));
+
+    window.draw(sprite);
 }
 
 void View::draw_power_ups() {
@@ -261,7 +317,6 @@ void View::draw_rpg() {
   rpg_sprite.setPosition(static_cast<float>(rpg->get_x()),
                          static_cast<float>(rpg->get_y()));
 
-  // Draw the sprite
   window.draw(rpg_sprite);
 }
 
@@ -288,17 +343,38 @@ void View::draw_hitmarkers() {
 }
 
 void View::start_screen() {
-  sf::Font roboto_font;
-  roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
-  sf::Text start_page;
-  start_page.setFont(roboto_font);
-  start_page.setCharacterSize(70);
-  start_page.setFillColor(sf::Color::White);
-  start_page.setString("PRESS SPACE TO START\n");
-  start_page.setPosition(constants::WINDOW_WIDTH / 5 - 100,
-                         constants::WINDOW_HEIGHT / 3 + 80);
-  window.draw(start_page);
+    sf::Font roboto_font;
+    roboto_font.loadFromFile(constants::ROBOTO_FONT_PATH);
+
+    sf::Text start_page;
+    start_page.setFont(roboto_font);
+    start_page.setCharacterSize(70);
+    start_page.setFillColor(sf::Color::White);
+    start_page.setString("PRESS SPACE TO START");
+
+    sf::FloatRect start_bounds = start_page.getLocalBounds();
+    start_page.setOrigin(start_bounds.left + start_bounds.width / 2.f,
+                         start_bounds.top + start_bounds.height / 2.f);
+
+    start_page.setPosition(constants::WINDOW_WIDTH / 2.f,
+                           constants::WINDOW_HEIGHT / 3.f + 80);
+    window.draw(start_page);
+
+    sf::Text rules_text;
+    rules_text.setFont(roboto_font);
+    rules_text.setCharacterSize(30);
+    rules_text.setFillColor(sf::Color(200, 200, 200));
+    rules_text.setString("PRESS R FOR RULES");
+
+    sf::FloatRect rules_bounds = rules_text.getLocalBounds();
+    rules_text.setOrigin(rules_bounds.left + rules_bounds.width / 2.f,
+                         rules_bounds.top + rules_bounds.height / 2.f);
+
+    rules_text.setPosition(constants::WINDOW_WIDTH / 2.f,
+                           constants::WINDOW_HEIGHT / 3.f + 150);
+    window.draw(rules_text);
 }
+
 
 void View::controls_screen() {
   sf::Font roboto_font;
@@ -323,31 +399,39 @@ void View::controls_screen() {
 }
 
 void View::update_screen() {
-  window.clear(sf::Color::Black);
-  if (game.is_game_over()) {
-    View::disactivate();
-  } else if (!game.has_game_started() && !game.is_on_game_rules()) {
-    start_screen();
-  } else if (!game.has_game_started() && game.is_on_game_rules()) {
-    controls_screen();
-  }
-  if (!View::get_process_input()) {
-    display_game_over();
-  } else if (game.has_game_started()) {
-    load_textures();
-    draw_base();
-    draw_player();
-    draw_invaders();
-    draw_player_bullet();
-    draw_invader_bullets();
-    draw_shields();
-    display_lives();
-    display_score();
-    display_level();
-    draw_power_ups();
-    draw_scatter_bullets();
-    draw_rpg();
-    draw_hitmarkers();
-  }
-  window.display();
+    float dt = frameClock.restart().asSeconds();
+
+    window.clear();
+
+    background.update(dt);
+    background.draw(window);
+
+    if (game.is_game_over()) {
+        View::disactivate();
+    } else if (!game.has_game_started() && !game.is_on_game_rules()) {
+        start_screen();
+    } else if (!game.has_game_started() && game.is_on_game_rules()) {
+        controls_screen();
+    }
+
+    if (!View::get_process_input()) {
+        display_game_over();
+    } else if (game.has_game_started()) {
+        load_textures();
+        draw_base();
+        draw_player();
+        draw_invaders();
+        draw_player_bullet();
+        draw_invader_bullets();
+        draw_shields();
+        display_lives();
+        display_score();
+        display_level();
+        draw_power_ups();
+        draw_scatter_bullets();
+        draw_rpg();
+        draw_hitmarkers();
+    }
+
+    window.display();
 }

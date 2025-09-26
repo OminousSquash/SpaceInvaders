@@ -6,6 +6,7 @@
 #define CMAKESFMLPROJECT_VIEW_H
 
 #include "Game.h"
+#include "Background.h"
 #include <SFML/Graphics.hpp>
 #include <utility>
 
@@ -13,6 +14,7 @@ class View {
 private:
     sf::RenderWindow &window;
     Game &game;
+    Background background; 
     bool process_input;
     bool all_textures_loaded;
     sf::Texture invader_texture;
@@ -20,6 +22,8 @@ private:
     sf::Texture explosion_texture;
     sf::Texture hitmarker_texture;
     sf::Texture rpg_texture;
+    sf::Texture powerup_texture;
+    sf::Clock frameClock;
 
 public:
 
@@ -27,7 +31,9 @@ public:
             game(game),
             window(window),
             process_input(true),
-            all_textures_loaded(false) {}
+            all_textures_loaded(false),
+            background(constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT) {
+            }
 
     void update_screen();
 

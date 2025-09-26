@@ -52,11 +52,12 @@ namespace constants {
     const int HITMARKER_LENGTH = 15;
     const int HITMARKER_WIDTH = 15;
     const std::string EXPLOSION_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Explosion.png";
-    const std::string PLAYER_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Player.png";
+    const std::string PLAYER_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/kenney_simple-space/PNG/Default/ship_G.png";
     const std::string HITMARKER_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Hitmarker.png";
     const std::string RPG_IMAGE_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/RPG.png";
-    const std::string INVADER_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/Invader.png";
+    const std::string INVADER_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/kenney_simple-space/PNG/Default/enemy_E.png";
     const std::string ROBOTO_FONT_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/SFMLFonts/roboto/Roboto-Bold.ttf";
+    const std::string POWER_UP_PATH = "/Users/varunsrinivasan/Documents/Projects/gameDev/SpaceInvaders/sprites/kenney_simple-space/PNG/Default/meteor_squareDetailedLarge.png";
 }
 
 #endif //CMAKESFMLPROJECT_CONSTANTS_H

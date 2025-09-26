@@ -7,7 +7,6 @@
 
 
 #include "Player.h"
-#include "PlayerController.h"
 #include "Shield.h"
 #include "Invader.h"
 #include "PlayerBullet.h"
@@ -70,8 +69,6 @@ public:
     void life_lost_reset();
 
     void set_player(Player p);
-
-    void set_player_controller(PlayerController pc);
 
     void add_sheild(Shield &sheild);
 
