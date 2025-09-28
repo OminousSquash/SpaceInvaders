@@ -1,6 +1,8 @@
 This is an extension to the classic Space Invaders game with new content.
 
-There are powerups that change the dynamic of the game, such as RPGs and bullet scattering
+There are powerups that change the dynamic of the game, such as RPGs and bullet scattering.
+
+Built a custom UI in C++ and implemented the game physics from scratch.
 
 Enjoy! 
 
