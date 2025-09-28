@@ -10,6 +10,8 @@ Please read this in to download and setup SMFL to run this project:
 
 https://github.com/SFML/cmake-sfml-project.
 
+[▶️ Watch the demo](assets/gameDemo.mp4)
+
 Commands:
 
 ```
