@@ -100,8 +100,6 @@ public:
 
     void check_player_bullet_bounds();
 
-    void check_player_bullet_collisions();
-
     void handle_player_bullet_collision(int idx);
 
     void handle_score_update(int invader_level);
@@ -113,6 +111,8 @@ public:
     void check_invader_bullet_bounds(InvaderBullet *&invader_bullet);
 
     void check_invader_bullet_collisions();
+
+    void check_invader_bullet_shield_collisions(InvaderBullet *& invader_bullet);
 
     int get_score();
 

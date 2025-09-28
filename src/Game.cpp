@@ -151,6 +151,31 @@ void Game::check_invader_bullet_bounds(InvaderBullet *&invader_bullet) {
     }
 }
 
+void Game::check_invader_bullet_shield_collisions(InvaderBullet *& invader_bullet) {
+    int bullet_x = invader_bullet -> get_x();
+    int bullet_y = invader_bullet -> get_y() + constants::BULLET_HEIGHT;
+    for (int i = 0; i < constants::NUM_SHIELDS; i++) {
+        Shield &sheild = shields[i];
+        int x_begin = sheild.get_x_begin();
+        int x_end = sheild.get_x_begin() + (constants::NUM_SHIELD_COMPONENTS * (constants::SHIELD_COMPONENT_WIDTH));
+        if (!(x_begin <= bullet_x && bullet_x <= x_end)) {
+            continue;
+        }
+        for (int j = 0; j < constants::NUM_SHIELD_COMPONENTS; j++) {
+            ShieldComponent &sc = sheild.get_shield_components()[j];
+            int sc_x = sc.get_x();
+            int sc_y = sc.get_y();
+            if (sc_x <= bullet_x && bullet_x < sc_x + constants::SHIELD_COMPONENT_WIDTH && sc.is_collidable() &&
+                (sc_y - sc.get_height()) <= bullet_y && bullet_y <= sc_y) {
+                delete invader_bullet;
+                invader_bullet = nullptr;
+                handle_player_bullet_collision(sc);
+                return;
+            }
+        }
+    }
+}
+
 void Game::check_invader_bullet_collisions() {
     for (InvaderBullet *&invader_bullet: invader_bullets) {
         if (invader_bullet == nullptr) {
@@ -160,6 +185,10 @@ void Game::check_invader_bullet_collisions() {
         int bullet_y = invader_bullet->get_y();
         int player_x = player.get_x();
         int player_y = player.get_y();
+        check_invader_bullet_shield_collisions(invader_bullet);
+        if (invader_bullet == nullptr) {
+            continue;
+        }
         if (player_x <= bullet_x && bullet_x <= player_x + constants::PLAYER_WIDTH
             && bullet_y + constants::BULLET_HEIGHT >= player_y) {
             player.set_lives_left(player.get_lives_left() - 1);
@@ -351,40 +380,6 @@ void Game::generate_power_ups() {
     }
 }
 
-int binary_search_less(vector<ShieldComponent> &arr, int target) {
-    // find largest i such that arr[i].x <= target
-    int low = 0;
-    int high = static_cast<int>(arr.size() - 1);
-    int ans = -1;
-    while (low <= high) {
-        int mid = (low + high) / 2;
-        if (arr[mid].get_x() <= target) {
-            ans = mid;
-            low = mid + 1;
-        } else {
-            high = mid - 1;
-        }
-    }
-    return ans;
-}
-
-int binary_search_greater(vector<ShieldComponent> &arr, int target) {
-    // find the smallest index i such that arr[i].x >= target
-    int low = 0;
-    int high = static_cast<int>(arr.size() - 1);
-    int ans = -1;
-    while (low <= high) {
-        int mid = (low + high) / 2;
-        if (arr[mid].get_x() >= target) {
-            ans = mid;
-            low = mid + 1;
-        } else {
-            high = mid - 1;
-        }
-    }
-    return ans;
-}
-
 bool is_point_in_cirle(int centre_x, int centre_y, int target_x, int target_y) {
     return ((target_x - centre_x) * (target_x - centre_x) + (target_y - centre_y) * (target_y - centre_y)
             <= constants::RPG_BLAST_RADIUS * constants::RPG_BLAST_RADIUS);
@@ -488,4 +483,3 @@ void Game::check_rpg_shield_collisions() {
         }
     }
 }
-
