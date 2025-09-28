@@ -20,4 +20,6 @@ cmake --build build
 ./build/bin/main
 ```
 
+Note: Enable keystrokes to be used in whichever terminal you are using to run the game. MacOS disables keystrokes for iTerm/Terminal by default. You can change these in the Privacy & Security tab of Settings.
+
 
