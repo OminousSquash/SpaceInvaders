@@ -39,10 +39,26 @@ add_executable(main src/main.cpp
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 
+# --- copy assets next to the executable after every build ---
+add_custom_command(TARGET main POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E echo "Copying assets to runtime directory..."
+    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:main>/sprites"
+    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:main>/SFMLFonts"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/sprites"    "$<TARGET_FILE_DIR:main>/sprites"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/SFMLFonts"  "$<TARGET_FILE_DIR:main>/SFMLFonts"
+    VERBATIM
+)
+
+# (optional) handy macro so you can build absolute paths at runtime if you want
+target_compile_definitions(main PRIVATE RESOURCE_ROOT="$<TARGET_FILE_DIR:main>")
+
 if (WIN32)
     add_custom_command(
             TARGET main
             COMMENT "Copy OpenAL DLL"
-            PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:main>
-            VERBATIM)
+            PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy
+                ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll
+                $<TARGET_FILE_DIR:main>
+            VERBATIM
+    )
 endif ()
